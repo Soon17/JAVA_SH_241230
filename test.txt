@@ -1,6 +1,7 @@
 ctrl N : 새로만들기
 ctrl Shift : O 자동 import
-
+F2 : 클래스 리네임
+Alt 방향키 : 코드 이동
 Git
 	-회원가입
 	-저장소 생성
