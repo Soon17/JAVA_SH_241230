@@ -16,7 +16,7 @@ public class Ex01_Star {
 				System.out.print("*");
 			}
 			System.out.println();
-		}
+		} 
 	} 
 
 }
