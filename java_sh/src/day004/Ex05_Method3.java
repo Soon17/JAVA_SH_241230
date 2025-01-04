@@ -1,3 +1,4 @@
+package day004;
 
 public class Ex05_Method3 {
 
