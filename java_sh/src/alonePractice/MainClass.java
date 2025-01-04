@@ -1,12 +1,11 @@
 package alonePractice;
 
-import java.util.ArrayList;
-
-import java.util.Scanner;
+import java.util.Random;
 
 public class MainClass {
-	static int m;
 	public static void main(String[] args) {
-		System.out.println(m);
+		Random r = new Random();
+		int n = r.nextInt(100);
+		System.out.println(n);
 	}
 }
