@@ -79,7 +79,7 @@ public class Game1_NumberBaseBall {
 		int inputNum;
 		boolean right = false;
 		ArrayList<Integer> exam = makeExamArray();
-		System.out.println(exam);
+		// System.out.println(exam);
 		do {
 			System.out.print("4자리의 숫자를 입력하세요:");
 			input = sc.nextInt();
