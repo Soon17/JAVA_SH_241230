@@ -64,17 +64,15 @@ public class Ex11_HomeWork {
 		int count = 0;
 		System.out.println(ranNum);
 		do {
+			++count;
 			System.out.print("숫자를 맞추세요:");
 			inputNum = sc.nextInt();
 			if(inputNum > ranNum) {
 				System.out.println("Down!");
-				count++;
 			} else if(inputNum < ranNum) {
 				System.out.println("Up!");
-				count++;
 			} else {
 				System.out.println("정답!");
-				count++;
 				System.out.println("(도전횟수 " + count + "회)");
 				if(score==0 || count<score) score = count;
 			}
