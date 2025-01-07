@@ -9,6 +9,8 @@ public class Ex09_ArrayRandom2 {
 		int arr[] = createArray(1,6,6);
 		
 		printArray(arr);
+		
+		
 	}
 	
 	public static int[] createArray(int i, int j, int k) {

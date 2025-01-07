@@ -73,7 +73,7 @@ public class Game1_NumberBaseBall {
 						+ "4자리의 숫자는 각각 다른 숫자로 이루어져 있으며,\n"
 						+ "자리와 숫자가 일치하면 Strike,\n"
 						+ "숫자만 일치하면 Ball,\n"
-						+ "아무것도 숫자도 없다면 Out입니다.\n"
+						+ "아무런 맞는 숫자가 없다면 Out입니다.\n"
 						+ "단서를 모아 최단 횟수 안에 숫자를 찾아보세요!");
 		int input;
 		int inputNum;
