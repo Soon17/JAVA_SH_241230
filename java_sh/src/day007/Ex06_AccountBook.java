@@ -18,7 +18,7 @@ public class Ex06_AccountBook {
 	 * 내용 : 1월 월급
 	 * 금액 : 1000000
 	 * 일시 : 2025-01-08
-	 * 가계부 등록이 완료됐습니다.
+	 * 등록이 완료됐습니다.
 	 * 메뉴
 	 * 1. 가계부 등록
 	 * 2. 가계부 수정
@@ -71,7 +71,7 @@ public class Ex06_AccountBook {
 		do {
 			printMenu();
 			
-			String input = sc.next();
+			String input = sc.nextLine();
 			if(input.length() != 1) {
 				System.out.println("없는 메뉴입니다.");
 				continue;
@@ -85,22 +85,31 @@ public class Ex06_AccountBook {
 				showItems();
 				break;
 			case '3':
-				//내역출력
-				//수정할 내역 숫자 입력
-				//금액 입력
-				//입력숫자 -1 번지 금액 수정
+				System.out.print("수정할 내역의 번호를 선택하세요: ");
+				int num = sc.nextInt();
+				System.out.print("수정할 금액: ");
+				int change = sc.nextInt();
+				items[num-1].setMoney(change);
+				System.out.println("수정되었습니다.");
 				break;
 			case '4':
 				deleteItem();
 				break;
 			case '5':
+				System.out.println("프로그램을 종료합니다.");
 				break;
 			default:
 				System.out.println("없는 메뉴입니다.");
 				break;
 			}
 		} while(choice != '5');
-		System.out.println("프로그램을 종료합니다.");
+	}
+	private static int moneySum() {
+		int sum = 0;
+		for (int i = 0; i < count; i++) {
+			sum += items[i].getMoney();
+		}
+		return sum;
 	}
 	private static void deleteItem() {
 		System.out.print("삭제할 내역의 번호를 입력하세요 : ");
@@ -133,19 +142,24 @@ public class Ex06_AccountBook {
 		for(int i = 0; i < count; i++) {
 			items[i].print(i+1);
 		}
+		System.out.println("----------------------");
+		System.out.println("잔액: " + moneySum() + "원");
+		System.out.println("----------------------");
 	}
 	private static void insertItem() {
 		System.out.print("수입/지출: ");
-		String income = sc.next();
+		String income = sc.nextLine();
 		System.out.print("분류: ");
-		String type = sc.next();
+		String type = sc.nextLine();
 		System.out.print("내용: ");
-		String content = sc.next();
+		String content = sc.nextLine();
 		System.out.print("금액: ");
 		int money = sc.nextInt();
+		sc.nextLine();
 		System.out.print("일시: ");
-		String date = sc.next();
+		String date = sc.nextLine();
 		items[count++] = new Item(income, type, content, money, date);
+		System.out.println("등록이 완료됐습니다.");
 	}
 
 }
@@ -162,17 +176,16 @@ class Item {
 	private int money;
 	private String income, type, content, date;
 	
-	public void print() {
-		System.out.printf("%s/%s/%s/%d/%s\n", income, type, content, money, date);
-	}
-	
-	public void print(int n  ) {
-		System.out.print(n + ". ");
-		print();
+	public void print(int n) {
+		System.out.printf("%d. %s/%s/%s/%d/%s\n", n, income, type, content, money, date);
 	}
 	
 	public void setMoney(int money) {
 		this.money = money;
+	}
+	
+	public int getMoney() {
+		return money;
 	}
 	
 }
