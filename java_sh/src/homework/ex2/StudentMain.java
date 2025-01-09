@@ -1,5 +1,8 @@
 package homework.ex2;
 
+import lombok.Data;
+
+@Data
 public class StudentMain {
 
 	public static void main(String[] args) {
@@ -30,10 +33,14 @@ public class StudentMain {
 		 * 	- 있으면 학년, 학기, 과목명을 입력받고 있으면 성적을 입력받아 수정
 		 * 9. 성적 삭제
 		 * 	- 학년, 반, 번호를 입력받아 학생을 찾음
-		 * 	- 있으면 학년, 학기, 과목명을 입력받아 
+		 * 	- 있으면 학년, 학기, 과목명을 입력받고 있으면 삭제
 		 * 10. 학생 조회
+		 * 	- 학년, 반을 입력하면 학생들을 조회
 		 * 11. 과목 조회
-		 * 12. 성적 조회 */
+		 * 	- 등록된 과목 전체를 조회
+		 * 12. 성적 조회
+		 * 	- 학년, 반, 번호를 입력받아 있으면 학생 성적을 조회
+		 * */
 		
 		Student[] stdList;
 		
