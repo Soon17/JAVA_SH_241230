@@ -2,6 +2,9 @@ package day007;
 
 import java.util.Scanner;
 
+import lombok.Data;
+
+@Data
 public class Ex06_AccountBook {
 
 	/*
