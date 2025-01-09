@@ -67,7 +67,6 @@ public class Ex06_AccountBook {
 	
 	public static void main(String[] args) {
 		
-		
 		do {
 			printMenu();
 			
@@ -85,14 +84,11 @@ public class Ex06_AccountBook {
 				showItems();
 				break;
 			case '3':
-				System.out.print("수정할 내역의 번호를 선택하세요: ");
-				int num = sc.nextInt();
-				System.out.print("수정할 금액: ");
-				int change = sc.nextInt();
-				items[num-1].setMoney(change);
-				System.out.println("수정되었습니다.");
+				showItems();
+				modifyItem();
 				break;
 			case '4':
+				showItems();
 				deleteItem();
 				break;
 			case '5':
@@ -103,6 +99,16 @@ public class Ex06_AccountBook {
 				break;
 			}
 		} while(choice != '5');
+	}
+	private static void modifyItem() {
+		System.out.print("수정할 내역의 번호를 선택하세요: ");
+		int num = sc.nextInt();
+		if(num > 0 && num <= count) {
+			System.out.print("수정할 금액: ");
+			int change = sc.nextInt();
+			items[num-1].setMoney(change);
+			System.out.println("수정되었습니다.");
+		} else System.out.println("해당 번호의 내역이 없습니다.");
 	}
 	private static int moneySum() {
 		int sum = 0;
