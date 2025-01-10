@@ -5,8 +5,8 @@ public class Ex09_String {
 	public static void main(String[] args) {
 		
 		String str = "abc";
-		System.out.println(str + "의 3번째 글자: " + str.charAt(3-1));
 		//charAt(i) : i번지의 문자를 가져옴
+		System.out.println(str + "의 3번째 글자: " + str.charAt(3-1));
 		
 		String str2 = new String("abc");
 		//equals(문자열) : 같은 문자열인지 확인
@@ -18,6 +18,7 @@ public class Ex09_String {
 		//indexOf(문자열) : 문자열이 있으면 시작 위치를 보여줌
 		int index = str3.indexOf(search);
 		System.out.println(str3 + "에서 첫번째" + search + "의 위치:" + index + "번지");
+		//lastIndexOf(문자열) : 문자열이 있으면 마지막 위치를 보여줌
 		index = str3.lastIndexOf(search);
 		System.out.println(str3 + "에서 마지막" + search + "의 위치:" + index + "번지");
 		

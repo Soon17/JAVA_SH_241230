@@ -42,7 +42,9 @@ public class StudentMain {
 		 * 	- 학년, 반, 번호를 입력받아 있으면 학생 성적을 조회
 		 * */
 		
-		Student[] stdList;
+		StudentProgram sp = new StudentProgram();
+		
+		sp.run();
 		
 	}
 
