@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class Ex12_TryCatch2 {
 
 	public static void main(String[] args) {
+
+		
 		
 		/*
 		 * 두 정수와 산술연산자를 입력받아 산술 연산 코드를 출력하는
@@ -33,6 +35,7 @@ public class Ex12_TryCatch2 {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		System.out.println("프로그램 종료");
 	}
 
 	private static double calculate(int i, char c, int j) throws Exception {

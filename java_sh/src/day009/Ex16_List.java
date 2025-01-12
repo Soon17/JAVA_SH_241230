@@ -34,7 +34,7 @@ public class Ex16_List {
 		/*
 		 * boolean remove(Object o)
 		 * 	- 이 remove는 같다를 Objects.equals를 이용하여 판단
-		 * 	- Object.equals(Object 01, Object o2)
+		 * 	- Object.equals(Object o1, Object o2)
 		 * 		-o1과 o2가 다른 클래스이면 false 리턴
 		 * 		-같은 클래스이면 o1.equals를 이용하여 비교
 		 */
@@ -63,10 +63,7 @@ public class Ex16_List {
 		Point p = list2.get(1);
 		p.x = 2;
 		p.y = 3;
-		System.out.println(list2
-				
-				
-				);
+		System.out.println(list2);
 	}
 
 }

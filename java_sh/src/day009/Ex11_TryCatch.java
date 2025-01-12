@@ -5,7 +5,6 @@ public class Ex11_TryCatch {
 	public static void main(String[] args) {
 		try {
 			System.out.println(1/0);
-			int[] arr = new int[4];
 		} catch (ArithmeticException e) {
 			System.out.println("0으로 나눌 수 없습니다.");
 		} catch (RuntimeException e) {		//모든 런타임 예외처리, 자식 클래스보다 위에 오면 안됨

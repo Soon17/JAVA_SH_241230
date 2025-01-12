@@ -16,7 +16,7 @@ public class Ex01_String {
 			System.out.println(fileName + "은 이미지 파일이 아닙니다.");
 			return;
 		}
-		//substring(index) : index번지부터 마지막까지의 문자열 추출
+		//substring(index) : index 번지부터 마지막까지의 문자열 추출
 		String sub = fileName.substring(index + 1);
 		boolean result = false;
 		for (String s : img) {
