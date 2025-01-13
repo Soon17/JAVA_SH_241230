@@ -27,7 +27,7 @@ public class StudentManager {
 				students.add(new Student(grd, cls, num, name));
 				System.out.println("등록되었습니다.");
 			} else {
-				System.out.println("이미 등록된 학생입니다.");
+				System.out.println("이미 등록된 학번입니다.");
 			}
 			sc.nextLine();				
 			break;
@@ -39,7 +39,21 @@ public class StudentManager {
 			
 			break;
 		case 4://학생 수정
-			
+			System.out.println("수정할 학번을 입력해주세요.");
+			inputStudentInfor();
+			if(studentIndex() == -1) {
+				System.out.println("등록되지 않은 학번입니다.");
+			} else {
+				System.out.println("수정할 내용을 입력해주세요.");
+				inputStudentInfor();
+				System.out.print("이름: ");
+				name = sc.next();
+				if(students.contains(new Student(grd, cls, num, name))) {
+					System.out.println("변경 사항이 없습니다.");
+				} else{
+					
+				}
+			}
 			break;
 		case 5://과목 수정
 			
@@ -48,11 +62,11 @@ public class StudentManager {
 			
 			break;
 		case 7://학생 삭제
-			System.out.println("삭제할 학생의 정보를 입력하세요.");	
+			System.out.println("삭제할 학번을 입력하세요.");	
 			inputStudentInfor();
 			
 			if(studentIndex() == -1) {
-				System.out.println("등록되지 않은 학생입니다.");
+				System.out.println("등록되지 않은 학번입니다.");
 			} else {
 				students.remove(studentIndex()).print();
 				System.out.println("삭제되었습니다.");
