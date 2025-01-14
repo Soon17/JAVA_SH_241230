@@ -36,29 +36,47 @@ public class Ex13_Phone {
 			runMenu(n);
 			
 		} while (n != 5);
-		System.out.println("프로그램을 종료합니다.");
 	}
 	
 	private static void runMenu(int n) {
 		switch (n) {
 		case 1:
-			System.out.println("전화번호를 추가합니다.");
+			insetPhoneNumber();
 			break;
 		case 2:
-			System.out.println("전화번호를 수정합니다.");
+			updatePhoneNumber();
 			break;
 		case 3:
-			System.out.println("전화번호를 삭제합니다.");
+			deletePhoneNumber();
 			break;
 		case 4:
-			System.out.println("전화번호를 조회합니다.");
+			searchPhoneNumber();
 			break;
 		case 5:
-			System.out.println("반복문을 빠져나갑니다.");
+			System.out.println("프로그램을 종료합니다.");
 			break;
 		default:
 			System.out.println("없는 메뉴입니다.");
 		}
+	}
+
+	private static void insetPhoneNumber() {
+		
+	}
+
+	private static void updatePhoneNumber() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void deletePhoneNumber() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void searchPhoneNumber() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private static void printMenu() {
