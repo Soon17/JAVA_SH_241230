@@ -34,13 +34,12 @@ public class StudentManager {
 			fieldClear();
 			break;
 		case 4://학생 수정
+			if(stdList.isEmpty()) {
+				System.out.println("등록된 학생이 없습니다.");
+				break;
+			}
 			System.out.println("수정할 학생의 정보를 입력하세요.");
-			System.out.print("학년: ");
-			grade = sc.nextInt();
-			System.out.print("반: ");
-			classNum = sc.nextInt();
-			System.out.print("번호: ");
-			num = sc.nextInt();
+			inputStudentInfo();
 			modifyStudent();
 			break;
 		case 5://과목 수정
@@ -80,7 +79,7 @@ public class StudentManager {
 			break;
 		}
 	}
-	
+
 	private void inputStudentInfo() {
 		System.out.print("학년: ");
 		grade = sc.nextInt();
@@ -100,12 +99,13 @@ public class StudentManager {
 	}
 
 	private void insertStudent() {
-		Student temp = new Student(grade, classNum, num);
-		if(stdList.indexOf(temp) < 0) {
+		Student tmp = new Student(grade, classNum, num);
+		int index = stdList.indexOf(tmp);
+		if(index < 0) {
 			System.out.print("이름: ");
 			String name = sc.next();
-			temp.setName(name);
-			stdList.add(temp);
+			tmp.setName(name);
+			stdList.add(tmp);
 			System.out.println("등록되었습니다.");
 		} else {
 			System.out.println("이미 등록된 학생입니다.");
@@ -124,23 +124,11 @@ public class StudentManager {
 	}
 
 	private void modifyStudent() {
-		if(stdList.size() == 0) {
-			System.out.println("등록된 학생이 없습니다.");
-			return;
-		}
-		Student tmp = new Student(grade, classNum, num);
-		if(stdList.indexOf(tmp) > 0) {
-			System.out.println("수정할 정보를 입력하세요.");
-			inputStudentInfo();
-			System.out.print("이름: ");
-			String name = sc.next();
-			if(name == tmp.getName()) {
-				System.out.println("변경사항이 없습니다.");
-			} else {
-				
-			}
-		} else {
-			System.out.println("해당하는 학생이 없습니다.");
+		
+		Student tmp = new Student(grade, classNum, num);	//바꿀 대상 학번
+		int index = stdList.indexOf(tmp);					//리스트에서 검색
+		if(index > 0) {
+			 
 		}
 		return;
 	}
