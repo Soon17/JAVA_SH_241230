@@ -2,6 +2,8 @@ package day010;
 
 import java.util.Scanner;
 
+import lombok.Data;
+
 public class Ex13_Phone {
 
 	/*
@@ -61,7 +63,10 @@ public class Ex13_Phone {
 	}
 
 	private static void insetPhoneNumber() {
-		
+		System.out.println("이름: ");
+		String name = sc.nextLine();
+		System.out.println("번호(***-****-****):");
+		String phoneNumber = sc.nextLine();
 	}
 
 	private static void updatePhoneNumber() {
@@ -89,4 +94,10 @@ public class Ex13_Phone {
 						+ "******************");
 	}
 
+}
+
+@Data
+class PhoneNumber {
+	private String name;
+	private String phoneNumber;
 }
