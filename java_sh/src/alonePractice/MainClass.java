@@ -1,5 +1,6 @@
 package alonePractice;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,14 +10,13 @@ import lombok.NoArgsConstructor;
 
 public class MainClass {
 	public static void main(String[] args) {
-		Word w = new Word("rea", "asd");
-		System.out.println(w.getName().contains("ea"));
+		int i;
+		try {
+			while((i = System.in.read()) != '\n') {
+				System.out.print((char)i);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-}
-
-@Data
-@AllArgsConstructor
-class Word {
-	String name;
-	String age;
 }

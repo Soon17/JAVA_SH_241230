@@ -41,6 +41,7 @@ public class StudentManager {
 			System.out.println("수정할 학생의 정보를 입력하세요.");
 			inputStudentInfo();
 			modifyStudent();
+			fieldClear();
 			break;
 		case 5://과목 수정
 			modifySubject();
@@ -51,8 +52,10 @@ public class StudentManager {
 			System.out.println("성적수정을 진행합니다.");	
 			break;
 		case 7://학생 삭제
-			deleteStudent();
-			System.out.println("학생삭제를 진행합니다.");			
+			System.out.println("삭제할 학생의 정보를 입력하세요.");
+			inputStudentInfo();
+			deleteStudent();	
+			fieldClear();
 			break;
 		case 8://과목 삭제
 			deleteSubject();
@@ -63,8 +66,11 @@ public class StudentManager {
 			System.out.println("성적삭제를 진행합니다.");		
 			break;
 		case 10://학생 조회
-			showStudents();
-			System.out.println("학생조회를 진행합니다.");		
+			if(stdList.size() == 0) {
+				System.out.println("등록된 학생이 없습니다.");
+			} else{
+				showStudents();					
+			}
 			break;
 		case 11://과목 조회
 			showSubjects();
@@ -125,12 +131,31 @@ public class StudentManager {
 
 	private void modifyStudent() {
 		
-		Student tmp = new Student(grade, classNum, num);	//바꿀 대상 학번
-		int index = stdList.indexOf(tmp);					//리스트에서 검색
-		if(index > 0) {
-			 
+		int index = stdList.indexOf(new Student(grade, classNum, num));					//리스트에서 검색, 인덱스 추출
+		if(index >= 0) {
+			//리스트에서 해당학생을 빼온다(remove)
+			Student tmp = stdList.remove(index);
+			//새로 학년, 반, 학번을 입력 받는다
+			System.out.println("수정할 내용을 입력하세요.");
+			inputStudentInfo();
+			//있는지 체크
+			int i = stdList.indexOf(new Student(grade, classNum, num));
+			//있으면 이미 있는 학번이라 출력
+			if(i >= 0) {
+				System.out.println("중복된 학번입니다.");
+				stdList.add(tmp);
+			}
+			//없으면 이름을 입력받는다
+			else {
+				System.out.print("이름: ");
+				String name = sc.next();
+				tmp.setName(name);
+				stdList.add(tmp);
+				System.out.println("수정되었습니다.");
+			}
+		} else {
+			System.out.println("해당 학생이 없습니다.");
 		}
-		return;
 	}
 
 	private void modifySubject() {
@@ -144,8 +169,8 @@ public class StudentManager {
 	}
 
 	private void deleteStudent() {
-		// TODO Auto-generated method stub
-		
+		stdList.remove(new Student(grade, classNum, num));
+		System.out.println("삭제되었습니다.");
 	}
 
 	private void deleteSubject() {
@@ -159,8 +184,9 @@ public class StudentManager {
 	}
 
 	private void showStudents() {
-		// TODO Auto-generated method stub
-		
+		for (Student s : stdList) {
+			System.out.println(s);
+		}
 	}
 
 	private void showSubjects() {
