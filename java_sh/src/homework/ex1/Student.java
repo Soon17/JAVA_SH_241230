@@ -3,6 +3,7 @@ package homework.ex1;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class StudentManager {
 
 	private ArrayList<Student> stdList = new ArrayList<Student>();
+	private ArrayList<Subject> subList = new ArrayList<Subject>();
 	private Scanner sc = new Scanner(System.in);
 	private int grade;
 	private int classNum;
@@ -44,14 +45,24 @@ public class StudentManager {
 			fieldClear();
 			break;
 		case 5://과목 수정
+			if(stdList.isEmpty()) {
+				System.out.println("등록된 과목이 없습니다.");
+				break;
+			}
+			System.out.println("수정할 과목의 정보를 입력하세요.");
+			inputSubjectInfo();
 			modifySubject();
-			System.out.println("과목수정을 진행합니다.");	
+			fieldClear();
 			break;
 		case 6://성적 수정
 			modifyScore();
 			System.out.println("성적수정을 진행합니다.");	
 			break;
 		case 7://학생 삭제
+			if(stdList.isEmpty()) {
+				System.out.println("등록된 학생이 없습니다.");
+				break;
+			}
 			System.out.println("삭제할 학생의 정보를 입력하세요.");
 			inputStudentInfo();
 			deleteStudent();	
@@ -99,9 +110,10 @@ public class StudentManager {
 		System.out.print("학년: ");
 		grade = sc.nextInt();
 		System.out.print("학기: ");
-		classNum = sc.nextInt();
+		semester = sc.nextInt();
+		sc.nextLine();
 		System.out.print("과목명: ");
-		num = sc.nextInt();
+		subName = sc.nextLine();
 	}
 
 	private void insertStudent() {
@@ -120,8 +132,14 @@ public class StudentManager {
 	}
 
 	private void insertSubject() {
-		// TODO Auto-generated method stub
-		
+		Subject tmp = new Subject(grade, semester, subName);
+		int index = subList.indexOf(tmp);
+		if(index < 0) {
+			subList.add(tmp);
+			System.out.println("등록되었습니다.");
+		} else {
+			System.out.println("이미 등록된 과목입니다.");
+		}
 	}
 
 	private void insertScore() {

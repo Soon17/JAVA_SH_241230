@@ -3,12 +3,12 @@ package day012;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import lombok.Data;
 public class Ex09_ObjectStream2 {
 
 	static Scanner sc = new Scanner(System.in);
-	static ArrayList<Car> list = new ArrayList<Car>();
+	static List<Car> list = new ArrayList<Car>();
 	static String fileName = "src/day012/CarList.txt";
 	public static void main(String[] args) {
 		
@@ -43,7 +43,7 @@ public class Ex09_ObjectStream2 {
 			
 			runMenu(menu);
 			printMenu();
-		} while(menu != 3);
+		} while(menu != 4);
 		
 		System.out.println("프로그램을 종료합니다.");
 	}
@@ -72,12 +72,33 @@ public class Ex09_ObjectStream2 {
 			showCars();
 			break;
 		case 3:
+			deleteCars();
+			break;
+		case 4:
 			uploadList();
 			break;
 
 		default:
 			System.out.println("잘못된 메뉴입니다.");
 			break;
+		}
+	}
+	private static void deleteCars() {
+		if(list.size() == 0) {
+			System.out.println("등록된 차가 없습니다.");
+			return;
+		}
+		
+		System.out.print("회사: ");
+		String company = sc.next();
+		System.out.print("차종: ");
+		String name = sc.next();
+		Car c = new Car(company, name);
+		if(list.contains(c)) {
+			list.remove(c);
+			System.out.println("삭제 되었습니다.");
+		} else {
+			System.out.println("해당하는 자동차가 없습니다.");
 		}
 	}
 	private static void insertCar() {
@@ -93,6 +114,16 @@ public class Ex09_ObjectStream2 {
 			System.out.println("등록된 차가 없습니다.");
 			return;
 		}
+		
+		//정렬
+		list.sort((o1, o2) -> {
+			//브랜드를 사전순으로 정렬
+			if(!o1.getCompany().equals(o2.getCompany())) {
+				return o1.getCompany().compareTo(o2.getCompany());
+			}
+			//이름을 사전순 정렬
+			return o1.getName().compareTo(o2.getName());
+		});
 		for (Car c : list) {
 			System.out.println(c);
 		}
@@ -113,7 +144,8 @@ public class Ex09_ObjectStream2 {
 		System.out.println("****************\n"
 					     + "1. 자동차 추가\n"
 					     + "2. 자동차 조회\n"
-					     + "3. 종료\n"
+					     + "3. 자동차 삭제\n"
+					     + "4. 종료\n"
 					     + "****************");
 	}
 
