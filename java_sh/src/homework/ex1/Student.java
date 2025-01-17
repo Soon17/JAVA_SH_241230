@@ -1,26 +1,16 @@
 package homework.ex1;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class Student {
 	
 	private int grade, classNum, num;
 	private String name;
-	private ArrayList<Subject> subList = new ArrayList<Subject>();
-	
-	public Student(int grade, int classNum, int num, String name) {
-		this.grade = grade;
-		this.classNum = classNum;
-		this.num = num;
-		this.name = name;
-	}
+	private List<Subject> subList;
 	
 	public Student(int grade, int classNum, int num) {
 		this.grade = grade;

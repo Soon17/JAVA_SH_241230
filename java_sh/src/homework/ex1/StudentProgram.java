@@ -14,15 +14,18 @@ public class StudentProgram {
 		printMenu();
 		
 		
-		StudentManager sm = new StudentManager();
+		StudentManager sm = new StudentManager(sc);
 		
 		while(true) {
-			
 			int menuNum = choiceMenu();
 			
 			if(menuNum == 0) break;
 			if(menuNum == -1) continue;
-			sm.runMenu(menuNum);
+			try{
+				sm.runMenu(menuNum);
+			} catch(InputMismatchException e) {
+				System.out.println("입력이 잘못되었습니다.");
+			}
 			
 			System.out.println("돌아가려면 엔터를 누르세요.");
 			sc.nextLine();
@@ -48,10 +51,10 @@ public class StudentProgram {
 
 	public void printMenu() {
 		System.out.println(	  "********************메뉴********************\n"
-							+ " 1. 학생 등록\t2. 과목 등록\t3. 성적 등록\n"
-							+ " 4. 학생 수정\t5. 과목 수정\t6. 성적 수정\n"
-							+ " 7. 학생 삭제\t8. 과목 삭제\t9. 성적 삭제\n"
-							+ " 10.학생 조회\t11.과목 조회\t12.성적 조회\n"
+							+ " 1. 학생 등록\t5. 과목 등록\t9. 성적 등록\n"
+							+ " 2. 학생 수정\t6. 과목 수정\t10.성적 수정\n"
+							+ " 3. 학생 삭제\t7. 과목 삭제\t11.성적 삭제\n"
+							+ " 4. 학생 조회\t8. 과목 조회\t12.성적 조회\n"
 							+ "*******************************************");
 	}
 }
