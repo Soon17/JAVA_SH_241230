@@ -21,7 +21,7 @@ public class Ex04_ByteStreamInput {
 		 * InputStream은 해당 폴더에 파일이 없으면 FileNotFoundException 생성
 		 */
 		try{
-			fis = new FileInputStream("src/day012/byte_stream");
+			fis = new FileInputStream("src/day012/byte_stream.txt");
 			int data;
 			do{
 				data = fis.read();

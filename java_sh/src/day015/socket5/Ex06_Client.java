@@ -67,7 +67,7 @@ public class Ex06_Client {
 	}
 
 	private static void insert() {
-		System.out.print("추가할 학생의 정보를 입력하세요: ");
+		System.out.println("추가할 학생의 정보를 입력하세요.");
 		Student std = input();
 		
 		try {

@@ -19,6 +19,7 @@ public class Ex07_CharStream {
 				char ch = (char)fr.read();
 				System.out.print(ch);
 			}
+			System.out.println("의 내용을 읽었습니다.");
 		} catch (FileNotFoundException e) {
 			System.out.println("파일을 찾을 수 없습니다.");
 		} catch (IOException e) {
@@ -26,7 +27,7 @@ public class Ex07_CharStream {
 		}
 		
 		try(FileWriter fw = new FileWriter(filename)){
-			String str = "가나다라123";
+			String str = "가나다123";
 			fw.write(str);
 			fw.flush();
 			System.out.println(str + "을 파일에 기록했습니다.");
