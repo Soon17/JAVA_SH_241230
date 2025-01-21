@@ -1,22 +1,24 @@
 package alonePractice;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Scanner;
 
 public class MainClass {
 	public static void main(String[] args) {
-		int i;
-		try {
-			while((i = System.in.read()) != '\n') {
-				System.out.print((char)i);
+		Scanner sc = new Scanner(System.in);
+		
+		while(true) {
+			System.out.print("입력: ");
+			String s = sc.nextLine();
+			if(s.equals("X")) {
+				System.out.println("종료");
+				sc.close();
+				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("출력: " + s);
+		}
+		
+		while(true) {
+			
 		}
 	}
 }
