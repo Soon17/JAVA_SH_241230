@@ -1,4 +1,4 @@
-package day015.socket5;
+package day016;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +13,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Server {
 
-	private List<Student> list;
+	private List<Post> list;
 	private Socket s;
 	
 	public void run() {
@@ -51,23 +51,24 @@ public class Server {
 			delete(ois, oos);
 			break;
 		case 4:
-			search(ois, oos);
+			view(oos);
 			break;
 
 		default: 
+			System.out.println("없는 메뉴입니다.");
 		}
 	}
 
 	private void insert(ObjectInputStream ois, ObjectOutputStream oos) {
-		//클라이언트로부터 학생 정보를 받음
+		//클라이언트로부터 게시글 정보를 받음
 		try {
-			Student std = (Student)ois.readObject();
+			Post p = (Post)ois.readObject();
 			
 			boolean res = true;
 			//중복확인, 있으면 flase 전송
-			if(list.contains(std)) res = false;
+			if(list.contains(p)) res = false;
 			//없으면 list에 추가
-			else list.add(std);
+			else list.add(p);
 			
 			oos.writeBoolean(res);
 			oos.flush();
@@ -82,27 +83,41 @@ public class Server {
 
 	private void update(ObjectInputStream ois, ObjectOutputStream oos) {
 		try {
-			//학생 기본 정보를 클라이언트에게서 받음
-			Student std = (Student)ois.readObject();
-			//수정할 학생 정보를 클라이언트에게 받음
-			Student newStd = (Student)ois.readObject();
+			//게시글 번호를 클라이언트에게서 받음
+			Post p = (Post)ois.readObject();
+			//번호에 맞는 게시글을 찾음
+			int index = list.indexOf(p); 
 			
 			boolean res = true;
-			//학생이 없으면 false를 저장
-			if(!list.contains(std)) res =  false;
-			//수정 정보가 이미 등록된 정보이면 false를 저장
-			else if(!std.equals(newStd) && list.contains(newStd)) {
+			
+			//게시글이 없으면 false반환
+			if(index < 0) {
 				res = false;
+				oos.writeBoolean(res);
+				oos.flush();
 			}
-			//기존 학생 정보를 가져와서 수정
+			//게시글이 있으면
 			else {
-				list.remove(std);
-				list.add(newStd);
+				//true를 반환
+				oos.writeBoolean(res);
+				//해당 게시글을 반환
+				oos.writeObject(list.remove(index));
+				oos.flush();
+				
+				Post newP = (Post)ois.readObject();
+				
+				if(list.add(newP)) {
+					oos.writeBoolean(res);
+					oos.flush();
+				} else {
+					res = false;
+					oos.writeBoolean(res);
+					oos.flush();
+				};
 				sort();
 			}
-			//클라이언트에게 결과를 전송
-			oos.writeBoolean(res);
-			oos.flush();
+			
+			System.out.println(list);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -110,44 +125,30 @@ public class Server {
 	
 	private void sort() {
 		list.sort((o1, o2) ->{
-			if(o1.getGrd() != o2.getGrd()) {
-				return o1.getGrd() - o2.getGrd();
-			}
-			if(o1.getCls() != o2.getCls()) {
-				return o1.getGrd() - o2.getGrd();
-			}
 			return o1.getNum() - o2.getNum();
 		});
 	}
 
 	private void delete(ObjectInputStream ois, ObjectOutputStream oos) {
 		try {
-			//클라이언트에게 학생 정보를 받음
-			Student std = (Student)ois.readObject();
+			//클라이언트에게 게시글 정보를 받음
+			Post p = (Post)ois.readObject();
 			//삭제 결과를 클라이언트에게 전송
-			oos.writeBoolean(list.remove(std));
+			oos.writeBoolean(list.remove(p));
 			oos.flush();
+			
+			System.out.println(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void search(ObjectInputStream ois, ObjectOutputStream oos) {
+	private void view(ObjectOutputStream oos) {
 		
 		try {
-			//클라이언트가 보내준 학생 정보를 받아옴
-			Student receiveStd =
-					(Student)ois.readObject();
-			//받은 학생 정보를 이용해서 일치하는 학생정보를 받아옴
-			Student std = null;
-			int index = list.indexOf(receiveStd);
-			if(index >= 0) {
-				std = list.get(index);
-			}
-			//일치하는 학생정보가 있으면 클라이언트에게 전송
-			oos.writeObject(std);
+			oos.writeObject(list);
 			oos.flush();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

@@ -206,7 +206,6 @@ class Post implements Serializable{
 	private String title, content, writer;
 	private Date date;
 	private int view;
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -218,11 +217,9 @@ class Post implements Serializable{
 		Post other = (Post) obj;
 		return num == other.num;
 	}
-
 	public void view() {
 		view++;
 	}
-
 	public Post(String title, String content, String writer) {
 		num = ++count;
 		this.title = title;
@@ -230,11 +227,9 @@ class Post implements Serializable{
 		this.writer = writer;
 		date = new Date();
 	}
-	
 	public Post(int num) {
 		this.num = num;
 	}
-
 	public void print() {
 		System.out.println("------------------------");
 		System.out.println("번호 : " + num);
@@ -245,7 +240,6 @@ class Post implements Serializable{
 		System.out.println("조회수 : " + view);
 		System.out.println("------------------------");
 	}
-
 	private String getDateStr() {
 		//Date -> String
 		//yyyy-MM-dd HH:mm:ss
@@ -253,7 +247,6 @@ class Post implements Serializable{
 				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(date);
 	}
-	
 	public static int getCount() {
 		return count;
 	}

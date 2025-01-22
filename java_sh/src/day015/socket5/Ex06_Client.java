@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 public class Ex06_Client {
@@ -106,18 +107,78 @@ public class Ex06_Client {
 	}
 
 	private static void update() {
-		// TODO Auto-generated method stub
-		
+		try {
+			//학생 기본 정보 입력
+			System.out.println("학생정보를 입력하세요.");
+			Student std = inputBase();
+			
+			//수정할 학생 정보 입력
+			System.out.println("새 학생 정보를 입력하세요.");
+			Student newStd = input();
+			
+			//메뉴를 전송
+			oos.writeInt(2);
+			
+			//서버에 학생 기본 정보와 수정할 학생 정보를 전송
+			oos.writeObject(std);
+			oos.writeObject(newStd);
+			oos.flush();
+			
+			//서버에서 결과를 받아서 true면 수정 성공
+			if(ois.readBoolean()) {
+				System.out.println("수정하였습니다.");
+			}
+			//false면 실패를 알림
+			else {
+				System.out.println("수정에 실패하였습니다.");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private static void delete() {
-		// TODO Auto-generated method stub
-		
+		try {
+			//학생정보 입력
+			Student std = inputBase();
+			//서버에 메뉴와 학생정보를 전송
+			oos.writeInt(3);
+			oos.writeObject(std);
+			oos.flush();
+			//결과를 서버에서 받아 알림문구 출력
+			if(ois.readBoolean()) {
+				System.out.println("삭제하였습니다.");
+			} else{
+				System.out.println("삭제에 실패하였습니다.");
+			};
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void search() {
-		// TODO Auto-generated method stub
 		
+		try {
+			//메뉴를 서버에 전송 : 4
+			oos.writeInt(4);
+			
+			//학생정보를 입력
+			Student std = inputBase();
+			//서버에게 학생 정보를 전송 후 학생 정보를 받아 옴
+			oos.writeObject(std);
+			oos.flush();
+			
+			Student receiveStd =
+					(Student)ois.readObject();
+			//학생 정보가 있으면 출력, 없으면 안내문구
+			if(receiveStd != null) {
+				System.out.println(receiveStd);
+				return;
+			}
+			System.out.println("일치하는 학생이 없습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void printMenu() {
