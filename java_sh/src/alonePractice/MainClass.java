@@ -7,7 +7,7 @@ public class MainClass {
 		Scanner sc = new Scanner(System.in);
 		
 		for (int i = 12593; i < 55204; i++) {
-			System.out.println((char)i);
+			System.out.print((char)i);
 		}
 	}
 }
