@@ -18,17 +18,19 @@ public class Ex01_Server {
 		 * 게시글 프로그램을 구현하고
 		 * 프로그램에서 관리하는 정보를 서버에 기록하는 예제
 		 */
+		int port = 5001;
 		
 		String fileName = "src/day016/data.txt";
 		List<Post> list = (List<Post>)load(fileName);
 		if(list == null) {
-			 list = new ArrayList<Post>();
+			list = new ArrayList<Post>();
+		} else if(!list.isEmpty()) {
+			int count = list.get(list.size() - 1).getNum();
+			Post.setCount(count);
 		}
 		
-		int port = 5001;
-		
-		
 		try {
+			
 			ServerSocket ss = new ServerSocket(port);
 			
 			while(true) {

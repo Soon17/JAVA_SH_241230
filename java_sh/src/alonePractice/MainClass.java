@@ -1,36 +1,31 @@
 package alonePractice;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainClass {
 	public static void main(String[] args) {
 		
-		Num num = new Num(1);
+		int input;
+		Date date;
+		ArrayList<String> dl= new ArrayList<String>();
+		SimpleDateFormat format = 
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		do {
+			Scanner sc = new Scanner(System.in);
+			input = sc.nextInt();
+			date = new Date();
+			
+			String time = format.format(date);
+			System.out.println(time);
+			dl.add(time + " "+ input);
+		} while(input != 1);
 		
-		System.out.println("Num.i = " + Num.i);
-
-		System.out.println("num.j = " + num.j);
+		Collections.sort(dl, Collections.reverseOrder());
 		
-		Num num2 = new Num(1);
-		
-		System.out.println("Num.i = " + Num.i);
-
-		System.out.println("num.j = " + num2.j);
-//		Scanner sc = new Scanner(System.in);
-//		
-//		for (int i = 12593; i < 55204; i++) {
-//			System.out.print((char)i);
-//		}
+		System.out.println(dl);
 	}
-}
-
-class Num {
-	
-	public Num(int j) {
-		++i;
-		this.j = j;
-	}
-	
-	static int i = 1;
-	int j;
 }
