@@ -64,13 +64,7 @@ public class Server {
 		try {
 			Post p = (Post)ois.readObject();
 			
-			boolean res = true;
-			//중복확인, 있으면 flase 전송
-			if(list.contains(p)) res = false;
-			//없으면 list에 추가
-			else list.add(p);
-			
-			oos.writeBoolean(res);
+			oos.writeBoolean(list.add(p));
 			oos.flush();
 			sort();
 			

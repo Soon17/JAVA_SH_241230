@@ -72,7 +72,7 @@ public class Ex01_Client {
 	}
 	
 	private static void insert() {
-		System.out.println("게시글을 입력하세요.");
+		System.out.println("게시글을 입력하세요." + Post.getCount());
 		Post p = input();
 		
 		try {

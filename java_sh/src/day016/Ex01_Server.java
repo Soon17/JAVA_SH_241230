@@ -32,9 +32,9 @@ public class Ex01_Server {
 			ServerSocket ss = new ServerSocket(port);
 			
 			while(true) {
+				
 				Socket s = ss.accept();
 				System.out.println("[연결 성공]");
-				
 				Server server = new Server(list, s);
 				
 				server.run();
