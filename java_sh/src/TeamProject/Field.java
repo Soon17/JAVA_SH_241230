@@ -14,7 +14,7 @@ public class Field {
 	 * 	OOOOO
 	 * 	OOOOO
 	 * */
-	boolean isBlack = true;
+	private boolean isBlack = true;
 	
 	public Field() {
 		fieldClear();
