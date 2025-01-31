@@ -1,0 +1,21 @@
+P(x, y)
+
+List<Point> blackList
+
+Collections.sort(blackList);  // -> P(0,0), P(2,7), P(4,3), ...
+
+for(Point p : blackList){
+	//p.x 증가, p.y 감소 (증가함수)
+	for(i = 0, i < 5; i++){
+		int conut = 0;
+		if(blackList.contains(new P(x, y + i))) count++;
+		if(count>=5) return true;
+	}
+	//p.x 증가, p.y 유지 (가로)
+	//p.x 증가, p.y 증가 (감소함수)
+	//p.x 유지, p.y 증가 (세로)
+}
+
+방안 1: 탐색 횟수 15*11*2 + 11*11*2 번
+방안 2: 탐색 횟수 점 개수 * 4 번
+방안 3: 탐색 횟수 8번
