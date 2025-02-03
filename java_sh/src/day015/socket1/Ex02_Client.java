@@ -25,6 +25,7 @@ public class Ex02_Client {
 		//소켓을 생성하고 연결을 요청
 		try (Socket s = new Socket(ip, port)) {
 			System.out.println("[연결 완료]");
+			
 			//IO스트림을 열어서 작업
 			OutputStream os = s.getOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -33,6 +34,7 @@ public class Ex02_Client {
 			oos.writeUTF(str);
 			oos.flush();
 			
+			//보낸 후 데이터를 받아서 콘솔에 출력
 			InputStream is = s.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
 				

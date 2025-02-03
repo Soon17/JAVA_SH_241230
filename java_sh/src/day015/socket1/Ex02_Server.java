@@ -32,14 +32,16 @@ public class Ex02_Server {
 			System.out.println("[연결 완료]");
 			
 			//작업(IO스트림 이용)
-			//클라이언트가 보낸 데이터를 받아서 콘솔에 출력
 			InputStream is = s.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
 				
+			//클라이언트가 보낸 데이터를 받아서 콘솔에 출력
 			String str = ois.readUTF();
 			System.out.println("받은 문자열 :" + str);
+			sc.nextLine();
 			
-			System.out.println("보낼 문자열 :");
+			//출력 후 보낼 데이터 작성
+			System.out.print("보낼 문자열 :");
 			String sendStr = sc.nextLine();
 			
 			OutputStream os = s.getOutputStream();

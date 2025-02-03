@@ -7,19 +7,15 @@ public class Field {
 
 	private final int maxField = 15;
 	private String[][] field = new String[maxField][maxField];
-	//field[2][2] = 'B';
-	/*	OOOOO
-	 * 	OOOOO
-	 * 	OOBWO
-	 * 	OOOOO
-	 * 	OOOOO
-	 * */
 	private boolean isBlack = true;
 	
 	public Field() {
 		fieldClear();
 	}
 	
+	/**
+	 * 필드 초기화 함수
+	 */
 	public void fieldClear() {
 		for(int i = 0; i < field.length; i++) {
 			for(int j = 0; j < field[i].length; j++) {
@@ -28,6 +24,9 @@ public class Field {
 		}
 	}
 	
+	/**
+	 * 필드 출력 함수
+	 */
 	public void printField() {
 		for (int i = 0; i < field.length; i++) {
 			System.out.print("  " + Integer.toHexString(i));
@@ -42,6 +41,11 @@ public class Field {
 		}
 	}
 	
+	/**
+	 * 필드 인덱스의 값을 바꿈
+	 * @param i
+	 * @param j
+	 */
 	public void setStone(int i, int j) {
 		if(isBlack) {
 			field[j][i] = "─●─";
