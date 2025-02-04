@@ -1,4 +1,4 @@
-package day015.socket4;
+package TeamProject;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import day015.socket5.Student;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class Server {
 	 */
 	public void receive() {
 		Thread t = new Thread(() -> {
-			String id = "(알 수 없음)";
+			String id = "";
 			try {
 				//list에 연결된 클라이언트를 추가
 				ObjectOutputStream oos =

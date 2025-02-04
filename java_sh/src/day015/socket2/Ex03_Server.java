@@ -60,7 +60,7 @@ public class Ex03_Server {
 					
 					while(true) {
 						String str = ois.readUTF();
-						System.out.print("수신 : " + str);
+						System.out.println("수신 : " + str);
 						if(str.equals("EXIT")) break;
 					}
 					System.out.println("[수신 기능을 종료합니다.]");

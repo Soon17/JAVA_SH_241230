@@ -1,9 +1,9 @@
-package day015.socket4;
+package TeamProject;
 
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Ex05_Client {
+public class ClientMain {
 
 	public static void main(String[] args) {
 		int port = 5001;
@@ -18,6 +18,7 @@ public class Ex05_Client {
 			
 			System.out.println("[연결 성공!]");
 			
+			System.out.print("사용하실 닉네임을 알려주세요: ");
 			String id = sc.nextLine();
 			Client c = new Client(id, s);
 			
@@ -28,5 +29,4 @@ public class Ex05_Client {
 			System.out.println("[클라이언트에서 오류 발생]");
 		}
 	}
-
 }

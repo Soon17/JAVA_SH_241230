@@ -1,4 +1,4 @@
-package day015.socket4;
+package TeamProject;
 
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ex05_Server {
+public class ServerMain {
 
 	public static void main(String[] args) {
 		
@@ -18,7 +18,7 @@ public class Ex05_Server {
 			//서버 소켓 생성
 			ServerSocket ss = new ServerSocket(port);
 			
-			System.out.println("[Server Open]");
+			System.out.println("[연결 대기중...]");
 			
 			while(true) {
 				//연결 대기, 요청 수락 후 소켓 객체 생성
