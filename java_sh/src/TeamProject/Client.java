@@ -1,5 +1,6 @@
 package TeamProject;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -17,58 +18,91 @@ public class Client {
 	private String id;
 	private Socket s;
 	private boolean myTurn;
-	private final static String EXIT = "EXIT";
+	private final static String EXIT = "q";
+	private Scanner sc = new Scanner(System.in);
 	
 	public Client(String id, Socket s) {
 		this.id = id;
 		this.s = s;
 	}
 
-	public void receive() {
-		Thread th2 = new Thread(() -> {
-			try {
-				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-				
-				while(true) {
-					String id = ois.readUTF();
-					String chat = ois.readUTF();
-					System.out.println(id + " : " + chat);
-					if(chat.equals(EXIT)) break;
-				}
-				System.out.println("[수신 기능을 종료합니다.]");
-			} catch (Exception e) {
-				System.out.println("[수신 중 오류 발생]");
-			}
-		});
-		
-		th2.start();
-	}
 	
-	public void send() {
-		Thread th1 = new Thread(() -> {
-			Scanner sc = new Scanner(System.in);
-			
-			try {
-				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-
-				System.out.println("종료하려면 " + EXIT + "를 입력하세요.");
-				while(true) {
-					System.out.print("채팅 입력: ");
-					String chat = sc.nextLine();
-					oos.writeUTF(id);
-					oos.writeUTF(chat);
-					oos.flush();
-					
-					if(chat.equals(EXIT)) break;
-				}
-				
-				System.out.println("[송신 기능을 종료합니다.]");
-				sc.close();
-			} catch (Exception e) {
-				System.out.println("[송신 중 오류 발생]");
-			}
-		});
+	public void connection() {
 		
-		th1.start();
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+			
+			int menu = 0;
+			do {
+				printMenu();
+				
+				menu = sc.nextInt();
+				sc.nextLine();
+				
+				oos.writeInt(menu);
+				oos.flush();
+				
+				runMenu(menu, ois, oos);
+				
+			}while(menu != 4);
+			
+		} catch(Exception e) {
+			System.out.println("메뉴 전송 중 오류 발생");
+			e.printStackTrace();
+		}
+	}
+
+
+	private void runMenu(int menu, ObjectInputStream ois, ObjectOutputStream oos) {
+		switch (menu) {
+		case 1:
+			chat(oos, ois);
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		case 4:
+			
+			break;
+
+		default:
+			break;
+		}
+	}
+
+
+	private void chat(ObjectOutputStream oos, ObjectInputStream ois) {
+		try{
+			oos.writeUTF(id);
+			oos.flush();
+		} catch(Exception e) {
+			System.out.println("대기실 입장 중 오류 발생");
+			e.printStackTrace();
+		}
+		System.out.println("[대기실에 입장하였습니다]");
+		receive(ois);
+		send(oos);
+	}
+
+
+	private void send(ObjectOutputStream oos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void receive(ObjectInputStream ois) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void printMenu() {
+		System.out.println("1. 채팅, 2. 방 만들기, 3. 방 들어가기, 4. 종료");
+		System.out.print("메뉴 입력: ");
 	}
 }

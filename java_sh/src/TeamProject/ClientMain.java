@@ -22,11 +22,13 @@ public class ClientMain {
 			String id = sc.nextLine();
 			Client c = new Client(id, s);
 			
-			c.receive();
-			c.send();
+			c.connection();
+			
+			System.out.println("[종료합니다]");
 			
 		} catch (Exception e) {
-			System.out.println("[클라이언트에서 오류 발생]");
+			System.out.println("서버 연결 중 오류 발생");
+			e.printStackTrace();
 		}
 	}
 }

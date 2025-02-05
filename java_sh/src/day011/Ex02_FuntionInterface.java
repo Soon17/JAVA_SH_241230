@@ -19,18 +19,29 @@ public class Ex02_FuntionInterface {
 		list.add(new Person("또치", "801111-2"));
 		
 		print1(list, t -> true);
-		//이름에 '길'이 포함된 사람의 정보를 출력
 		System.out.println("-----------------------");
+		//이름에 '길'이 포함된 사람의 정보를 출력
 		print1(list, (t) -> {
 			return t.getName().contains("길");
 		});
+		System.out.println("-----------------------");
 		//성별이 여성인 사람의 정보를 출력
-		System.out.println("-----------------------");
 		print1(list, t -> t.getGender().equals("F"));
-		//생일이 12월인 사람의 정보를 출력
 		System.out.println("-----------------------");
+		//생일이 12월인 사람의 정보를 출력
 		print1(list, t -> Integer.parseInt(t.getNum().substring(2, 4)) == 12);
 	}
+	
+//	(t -> true)
+	
+//		  |
+//		  |
+//		 \|/
+//		  V	
+	
+//	public boolean test(Person t) {
+//		return true;
+//	}
 	
 	//주어진 조건에 따라 사람들을 출력하는 메소드
 	public static void print1(List<Person> list, Predicate<Person> p) {
