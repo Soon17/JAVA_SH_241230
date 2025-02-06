@@ -1,12 +1,9 @@
 package TeamProject;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
-
-import lombok.AllArgsConstructor;
 
 /*
  * Client 클래스를 이용하여
@@ -28,7 +25,6 @@ public class Client {
 
 	
 	public void connection() {
-		
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
@@ -90,14 +86,39 @@ public class Client {
 
 
 	private void send(ObjectOutputStream oos) {
-		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
 		
+		try {
+			while(true) {
+				System.out.print("채팅 입력(종료q): ");
+				String chat = sc.nextLine();
+				oos.writeObject(new Chat(id, chat));
+				oos.flush();
+				
+				if(chat.equals(EXIT)) break;
+			}
+			
+			System.out.println("[대기실을 나갑니다]");
+			
+		} catch (Exception e) {
+			System.out.println("[송신 중 오류 발생]");
+		}
 	}
 
 
 	private void receive(ObjectInputStream ois) {
-		// TODO Auto-generated method stub
-		
+		Thread th = new Thread(()->{			
+			try {
+				while(true) {
+					Chat c = (Chat)ois.readObject();
+					if(c.getChat().equals(EXIT)) break;
+					System.out.println(c);
+				}
+			} catch (Exception e) {
+				System.out.println("[수신 중 오류 발생]");
+			}
+		});
+		th.start();
 	}
 
 

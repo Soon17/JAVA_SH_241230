@@ -24,8 +24,6 @@ public class ClientMain {
 			
 			c.connection();
 			
-			System.out.println("[종료합니다]");
-			
 		} catch (Exception e) {
 			System.out.println("서버 연결 중 오류 발생");
 			e.printStackTrace();
