@@ -8,7 +8,7 @@ public class Ex11_ForAlphabet {
 		}
 		System.out.println();
 		for(char c = 'A'; c <= 'Z'; c++) {
-			System.out.print(c);			
+			System.out.print(c);	
 		}
 	}
 }
