@@ -14,8 +14,7 @@ public class Server {
 			new ArrayList<ObjectOutputStream>();
 	private static List<ObjectOutputStream> chatList =
 			new ArrayList<ObjectOutputStream>();
-	private static List<ObjectOutputStream> gameList =
-			new ArrayList<ObjectOutputStream>();
+	private static List<Room> roomList = new ArrayList<Room>();
 	private Socket s;
 	private final static String EXIT = "q";
 	
@@ -60,14 +59,53 @@ public class Server {
 			chat(oos, ois);
 			break;
 		case 2:
-			
+			makeRoom(oos, ois);
 			break;
 		case 3:
-			
+			searchRoom(oos, ois);
 			break;
 	
 		default:
 			break;
+		}
+	}
+
+	private void searchRoom(ObjectOutputStream oos, ObjectInputStream ois) {
+		try {
+			int roomNum = ois.readInt();
+			Room room = new Room(roomNum, oos);
+			if(roomList.contains(room)) {
+				oos.writeBoolean(true);
+			}
+			else {
+				oos.writeBoolean(false);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void makeRoom(ObjectOutputStream oos, ObjectInputStream ois) {
+		System.out.println("[방을 개설해봅니다]");
+		roomList.add(new Room(15, null));
+		try {
+			int roomNum = ois.readInt();
+			System.out.println("[개설할 방 번호는" + roomNum + "]");
+			Room room = new Room(roomNum, oos);
+			boolean thereIs = roomList.contains(room);
+			System.out.println(thereIs);
+			if(thereIs) {
+				oos.writeBoolean(false);
+				send(oos, "[이미 존재함]");
+				System.out.println("false 전송");
+			}
+			else {
+				oos.writeBoolean(true);
+				System.out.println("true 전송");
+				roomList.add(room);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -1,5 +1,6 @@
 package TeamProject;
 
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -7,6 +8,9 @@ import java.util.Scanner;
 
 public class OmokProgram {
 
+	public OmokProgram(ObjectOutputStream oos1, ObjectOutputStream oos2) {
+		
+	}
 	
 	static boolean firstTurn = true;
 	static boolean gameOver = false;
@@ -14,16 +18,8 @@ public class OmokProgram {
 	static List<Stone> blackList = new ArrayList<Stone>();
 	static List<Stone> whiteList = new ArrayList<Stone>();
 	static Field field = new Field();
-	
-	public static void main(String[] args) {
-		
-		run();
-		
-		System.out.println("[게임이 종료되었습니다]");
-		
-	}
 
-	private static void run() {
+	public void run() {
 		field.printField();
 		Scanner sc = new Scanner(System.in);
 		
@@ -106,7 +102,7 @@ public class OmokProgram {
 		}
 	}
 	
-	private static boolean possibleSeat(Stone tmp) {
+	private boolean possibleSeat(Stone tmp) {
 		if(overSix()) {
 			System.out.println("[흑은 6목 이상 불가합니다]");
 			return false;
@@ -122,7 +118,7 @@ public class OmokProgram {
 		return true;
 	}
 
-	private static boolean duplicateThree(Stone tmp) {
+	private boolean duplicateThree(Stone tmp) {
 		int count = 0;
 		if(isOpenThree(tmp, 1, 0)) count++;
 		if(isOpenThree(tmp, 0, 1)) count++;
@@ -131,7 +127,7 @@ public class OmokProgram {
 		return count > 1;
 	}
 
-	private static boolean isOpenThree(Stone tmp, int dx, int dy) {
+	private boolean isOpenThree(Stone tmp, int dx, int dy) {
 		
 		boolean result = false;
 		//4개 인덱스의 리스트 안에서 착수한 돌의 인덱스를 각각 간주
@@ -184,7 +180,7 @@ public class OmokProgram {
 		return result;
 	}
 
-	private static boolean duplicateFour(Stone tmp) {
+	private boolean duplicateFour(Stone tmp) {
 		int count = 0;
 		if(isOpenFour(tmp, 1, 0)) count++;
 		if(isOpenFour(tmp, 0, 1)) count++;
@@ -193,7 +189,7 @@ public class OmokProgram {
 		return count > 1;
 	}
 
-	private static boolean isOpenFour(Stone tmp, int dx, int dy) {
+	private boolean isOpenFour(Stone tmp, int dx, int dy) {
 		
 		boolean result = false;
 		//5개 인덱스의 리스트 안에서 착수한 돌의 인덱스를 각각 간주
@@ -236,11 +232,11 @@ public class OmokProgram {
 		return result;
 	}
 
-	private static boolean overSix() {
+	private boolean overSix() {
 		return winCheck(blackList, 6);
 	}
 
-	private static boolean winCheck(List<Stone> list, int n) {
+	private boolean winCheck(List<Stone> list, int n) {
 		//가로, 세로, 상승 대각선, 하강 대각선 승리 판단
 		if(widthWin(list, n) || heightWin(list, n) ||
 				upDiagonWin(list, n) || downDiagonWin(list, n))
@@ -248,23 +244,23 @@ public class OmokProgram {
 		return false;
 	}
 	
-	private static boolean widthWin(List<Stone> list, int n) {
+	private boolean widthWin(List<Stone> list, int n) {
 	    return checkWinDirection(list, 1, 0, n);  // 가로 방향 (x 증가)
 	}
 
-	private static boolean heightWin(List<Stone> list, int n) {
+	private boolean heightWin(List<Stone> list, int n) {
 	    return checkWinDirection(list, 0, 1, n);  // 세로 방향 (y 증가)
 	}
 
-	private static boolean downDiagonWin(List<Stone> list, int n) {
+	private boolean downDiagonWin(List<Stone> list, int n) {
 	    return checkWinDirection(list, 1, 1, n);  // 내려가는 대각선 (x, y 증가)
 	}
 
-	private static boolean upDiagonWin(List<Stone> list, int n) {
+	private boolean upDiagonWin(List<Stone> list, int n) {
 	    return checkWinDirection(list, 1, -1, n);  // 올라가는 대각선 (x 증가, y 감소)
 	}
 
-	private static boolean checkWinDirection(List<Stone> list, int dx, int dy, int n) {
+	private boolean checkWinDirection(List<Stone> list, int dx, int dy, int n) {
 	    for (Stone s : list) {
 	        int count = 0;
 	        // (dx, dy) 방향으로 연결된 돌의 개수를 셈
