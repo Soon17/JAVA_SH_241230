@@ -25,12 +25,14 @@ public class Server {
 
 	public void connected() {
 		Thread th = new Thread(()->{
+			ObjectOutputStream oos = null;
+			ObjectInputStream ois = null;
 			try {
 				//list에 연결된 클라이언트를 추가
-				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+				oos = new ObjectOutputStream(s.getOutputStream());
+				ois = new ObjectInputStream(s.getInputStream());
 				list.add(oos); //모든 클라이언트들의 출력스트림
-				System.out.println(list);
+				System.out.println("접속 중 인원: " + list.size());
 				while(true) {
 					//메뉴를 입력 받음
 					int menu = ois.readInt();
@@ -39,7 +41,10 @@ public class Server {
 				}
 				
 			} catch (IOException e) {
-				System.out.println("메뉴 수신 중 IO오류 발생");
+				list.remove(oos);
+				System.out.println("접속 중 인원: " + list.size());
+				System.out.println("대기실 인원: " + chatList.size());
+				System.out.println("[연결 끊김]");
 			} catch (Exception e) {
 				System.out.println("메뉴 수신 중 예기치 못한 오류 발생");
 				e.printStackTrace();
@@ -72,7 +77,6 @@ public class Server {
 			System.out.println("[" + user + "님이 대기실에 입장했습니다]");
 			receive(user, oos, ois);
 		} catch(IOException e) {
-			System.out.println("대기실 입장 중 IO오류 발생");
 			e.printStackTrace();
 		} catch(Exception e) {
 			System.out.println("대기실 입장 중 예기치 못한 오류 발생");
@@ -83,7 +87,19 @@ public class Server {
 	private void receive(String user, ObjectOutputStream oos, ObjectInputStream ois) {
 		try {
 			chatList.add(oos);
+			System.out.println("접속 중 인원: " + list.size());
 			System.out.println("대기실 인원: " + chatList.size());
+			synchronized(chatList) {
+				for (ObjectOutputStream client : chatList) {
+					//메세지를 쓴 클라이언트에겐 메세지를 보내지 않음
+					if(client == oos) {
+						send(client, "[대기실에 입장했습니다"
+								+ "(현재 대기실 인원" + chatList.size() + "명)]");
+					} else {
+						send(client, "[" + user + "님이 대기실에 입장했습니다]");
+					}
+				}				
+			}
 			//무한루프로 반복
 			while(true) {
 				Chat c = (Chat)ois.readObject();
@@ -95,31 +111,45 @@ public class Server {
 					for (ObjectOutputStream client : chatList) {
 						//메세지를 쓴 클라이언트에겐 메세지를 보내지 않음
 						if(client != oos && !c.getChat().equals(EXIT)) {
-							send(client, c);
+							send(client, c.toString());
 						} 
 						//연결된 클라이언트가 EXIT를 입력했을 때
-						else if(client == oos && c.getChat().equals(EXIT)) {
-							//클라이언트의 receive에 있는 쓰레드를 종료하기 위해서
-							send(client, c);
-							flag = true;
+						else if(c.getChat().equals(EXIT)) {
+							if(client == oos) {
+								//클라이언트의 receive에 있는 쓰레드를 종료하기 위해서
+								send(client, EXIT);
+								flag = true;
+							} else {
+								send(client, "[" + c.getId() + "님이 대기실을 나갔습니다]");
+							}
 						}
 					}
 				}
 				if(flag) {
 					chatList.remove(oos);
+					System.out.println("접속 중 인원: " + list.size());
+					System.out.println("대기실 인원: " + chatList.size());
+					break;
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("대기실에서 수신 중 " + user +  " IO오류");
 			chatList.remove(oos);
+			synchronized(chatList) {
+				for (ObjectOutputStream client : chatList) {
+					//대기실 잔여 인원에게만 전송
+					if(client != oos) {
+						send(client, "[" + user + "님이 대기실에서 나갔습니다]");
+					}
+				}				
+			}
 		} catch (Exception e) {
 			System.out.println("대기실 수신 중 예기치 못한 오류 발생");
 			e.printStackTrace();
 		}
 	}
 
-	private void send(ObjectOutputStream client, Chat c) {
-		if(client == null || c == null) {
+	private void send(ObjectOutputStream client, String s) {
+		if(client == null || s == null) {
 			return;
 		}
 		try {
@@ -129,13 +159,12 @@ public class Server {
 			 * 동기화를 통해 먼저 들어온 작업부터 실행되도록 해줌
 			 */
 			synchronized(client) {
-				client.writeObject(c);
+				client.writeUTF(s);
 				client.flush();
 			}
 			
 		} catch (Exception e) {
 			System.out.println("대기실 송신 중 예기치 못한 오류 발생");
-			chatList.remove(client);
 			e.printStackTrace();
 		}
 	}

@@ -44,7 +44,6 @@ public class Client {
 			}while(menu != 4);
 			
 		} catch(Exception e) {
-			System.out.println("메뉴 전송 중 오류 발생");
 			e.printStackTrace();
 		}
 	}
@@ -79,46 +78,46 @@ public class Client {
 			System.out.println("대기실 입장 중 오류 발생");
 			e.printStackTrace();
 		}
-		System.out.println("[대기실에 입장하였습니다]");
-		receive(ois);
 		send(oos);
+		receive(ois);
 	}
 
 
 	private void send(ObjectOutputStream oos) {
-		Scanner sc = new Scanner(System.in);
-		
-		try {
-			while(true) {
-				System.out.print("채팅 입력(종료q): ");
-				String chat = sc.nextLine();
-				oos.writeObject(new Chat(id, chat));
-				oos.flush();
+		Thread th = new Thread(()->{
+			Scanner sc = new Scanner(System.in);
+			
+			try {
+				Thread.sleep(10);
+				while(true) {
+					System.out.print("채팅 입력(종료q): ");
+					String chat = sc.nextLine();
+					oos.writeObject(new Chat(id, chat));
+					oos.flush();
+					
+					if(chat.equals(EXIT)) break;
+				}
 				
-				if(chat.equals(EXIT)) break;
+				System.out.println("[대기실을 나갑니다]");
+				
+			} catch (Exception e) {
+				System.out.println("[송신 중 오류 발생]");
 			}
-			
-			System.out.println("[대기실을 나갑니다]");
-			
-		} catch (Exception e) {
-			System.out.println("[송신 중 오류 발생]");
-		}
+		});
+		th.start();
 	}
 
 
 	private void receive(ObjectInputStream ois) {
-		Thread th = new Thread(()->{			
-			try {
-				while(true) {
-					Chat c = (Chat)ois.readObject();
-					if(c.getChat().equals(EXIT)) break;
-					System.out.println(c);
-				}
-			} catch (Exception e) {
-				System.out.println("[수신 중 오류 발생]");
+		try {
+			while(true) {
+				String s = ois.readUTF();
+				if(s.equals(EXIT)) break;
+				System.out.println(s);
 			}
-		});
-		th.start();
+		} catch (Exception e) {
+			System.out.println("[수신 중 오류 발생]");
+		}
 	}
 
 
