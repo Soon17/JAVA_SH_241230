@@ -77,15 +77,17 @@ public class Client {
 				oos.flush();
 				
 				if(ois.readBoolean()) {
+					//입장 공지 수령
+					System.out.println(ois.readUTF());
+					//시작 공지 수령
+					System.out.println(ois.readUTF());
 					break;
 				} else {
-					System.out.println("[존재하지 않는 방 번호입니다]");
+					//입장 불가 공지 수령
+					System.out.println(ois.readUTF());
 					continue;
 				}
 			}
-			
-			System.out.println("[방에 입장하였습니다]");
-			System.out.println("[게임이 시작됩니다]");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -100,15 +102,19 @@ public class Client {
 				oos.flush();
 				boolean success = ois.readBoolean();
 				if(success) {
-					System.out.println("[상대를 기다리는 중입니다]");
+					//개설 완료 공지 수령
+					System.out.println(ois.readUTF());
 					boolean findOther = ois.readBoolean();
 					if(findOther) {
-						System.out.println("[상대가 입장하였습니다]");
-						System.out.println("[게임이 시작됩니다]");
+						//상대 입장 공지 수령
+						System.out.println(ois.readUTF());
+						//게임 시작 공지 수령
+						System.out.println(ois.readUTF());
 					}
 					break;
 				} else {
-					System.out.println("[이미 존재하는 방 번호입니다]");
+					//개설 불가 공지 수령
+					System.out.println(ois.readUTF());
 					continue;
 				}
 			}

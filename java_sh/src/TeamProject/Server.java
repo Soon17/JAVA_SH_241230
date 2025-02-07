@@ -35,6 +35,7 @@ public class Server {
 				while(true) {
 					//메뉴를 입력 받음
 					int menu = ois.readInt();
+					System.out.println("[" + oos + "메뉴 " + menu + " 입력 받음]");
 					//입력받은 메뉴에 맞는 기능을 실행
 					runMenu(menu, oos, ois);
 				}
@@ -57,12 +58,15 @@ public class Server {
 		switch (menu) {
 		case 1:
 			chat(oos, ois);
+			System.out.println(oos + "채팅 종료, 메뉴로 복귀");
 			break;
 		case 2:
 			makeRoom(oos, ois);
+			System.out.println(oos + "방 만들기 종료, 메뉴로 복귀");
 			break;
 		case 3:
 			searchRoom(oos, ois);
+			System.out.println(oos + "방 입장 종료, 메뉴로 복귀");
 			break;
 	
 		default:
@@ -71,30 +75,36 @@ public class Server {
 	}
 
 	private void searchRoom(ObjectOutputStream oos, ObjectInputStream ois) {
+		System.out.println("[들어갈 방 번호 입력 대기 중]");
 		try {
 			while(true) {
 				int roomNum = ois.readInt();
-				Room tmp = new Room(roomNum, null);
-				for (Room r : roomList) {
-					if(r.equals(tmp)) {
-						r.setOos2(oos);
-						
-						synchronized(chatList) {
-							for (ObjectOutputStream client : chatList) {
-								//메세지를 쓴 클라이언트에겐 메세지를 보내지 않음
+				System.out.println("[" + oos + " 입장방 번호 " + roomNum + " 입력 받음]");
+				Room tmp = new Room(roomNum);
+				if(roomList.isEmpty() || !roomList.contains(tmp)) {
+					oos.writeBoolean(false);
+					send(oos, "[존재하지 않는 방입니다]");
+					continue;
+				}
+				for (Room room : roomList) {
+					if(room.equals(tmp)) {
+						if(!room.isFull()) {
+							room.setClient(oos);
+							for (ObjectOutputStream client : room.getGamers()) {
+								client.writeBoolean(true);
 								if(client == oos) {
-									
+									send(client, "[" + roomNum + "번 방에 입장하였습니다]");
 								} else {
-									
+									send(client, "[상대가 입장하였습니다]");
 								}
-							}				
+								send(client, "[게임이 시작됩니다]");
+							}
+							System.out.println(roomList);
+							return;
+						} else {
+							oos.writeBoolean(false);
+							send(oos, "[방의 정원이 가득 찼습니다]");
 						}
-						oos.writeBoolean(true);
-						r.getOos1().writeBoolean(true);
-					}
-					else {
-						oos.writeBoolean(false);
-						oos.flush();
 					}
 				}
 			}
@@ -104,24 +114,24 @@ public class Server {
 	}
 
 	private void makeRoom(ObjectOutputStream oos, ObjectInputStream ois) {
-		System.out.println("[방 번호 입력 대기 중]");
+		System.out.println("[생성할 방 번호 입력 대기 중]");
 		try {
 			Room room;
 			while(true) {
 				int roomNum = ois.readInt();
-				room = new Room(roomNum, oos);
+				System.out.println("[" + oos + " 생성방 번호 " + roomNum + " 입력 받음]");
+				room = new Room(roomNum);
 				boolean exist = roomList.contains(room);
-				System.out.println(exist);
 				if(exist) {
 					oos.writeBoolean(false);
-					oos.flush();
-					System.out.println("false 전송");
+					send(oos, "[이미 존재하는 방입니다]");
 				}
 				else {
 					oos.writeBoolean(true);
-					oos.flush();
-					System.out.println("true 전송");
+					send(oos, "[상대를 기다리는 중입니다]");
+					room.setClient(oos);
 					roomList.add(room);
+					System.out.println(roomList);
 					break;
 				}
 			}
@@ -207,8 +217,8 @@ public class Server {
 		}
 	}
 
-	private void send(ObjectOutputStream client, String s) {
-		if(client == null || s == null) {
+	private void send(ObjectOutputStream oos, String s) {
+		if(oos == null || s == null) {
 			return;
 		}
 		try {
@@ -217,9 +227,9 @@ public class Server {
 			 * 순서가 꼬이거나 예상치못한 문제 발생 가능성 있음
 			 * 동기화를 통해 먼저 들어온 작업부터 실행되도록 해줌
 			 */
-			synchronized(client) {
-				client.writeUTF(s);
-				client.flush();
+			synchronized(oos) {
+				oos.writeUTF(s);
+				oos.flush();
 			}
 			
 		} catch (Exception e) {

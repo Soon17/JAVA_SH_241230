@@ -13,18 +13,18 @@ public class Room {
 	
 	private List<ObjectOutputStream> gamers = new ArrayList<ObjectOutputStream>();
 	
-	private boolean start = false;
+	private boolean full = false;
 	
 	private OmokProgram omok;
 	
-	public Room(int roomNum, ObjectOutputStream oos1) {
+	public Room(int roomNum) {
 		this.roomNum = roomNum;
 	}
 	
 	public void runOmok(ObjectOutputStream oos1, ObjectOutputStream oos2) {
 		
-//		omok = new OmokProgram(oos1, oos2);
-//		omok.run();
+		omok = new OmokProgram();
+		omok.run();
 	}
 
 	@Override
@@ -41,6 +41,13 @@ public class Room {
 	
 	public void setClient(ObjectOutputStream oos) {
 		gamers.add(oos);
-		if(gamers.size() == 2) start = true;
+		if(gamers.size() == 2) full = true;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + roomNum + "번 방, 인원 " + gamers.size() + "명]";
+	}
+	
+	
 }

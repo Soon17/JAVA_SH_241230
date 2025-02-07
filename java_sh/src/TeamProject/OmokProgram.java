@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class OmokProgram {
 
-	public OmokProgram(ObjectOutputStream oos1, ObjectOutputStream oos2) {
-		
+	public OmokProgram() {
 	}
 	
 	static boolean firstTurn = true;
