@@ -101,14 +101,17 @@ public class Client {
 				boolean success = ois.readBoolean();
 				if(success) {
 					System.out.println("[상대를 기다리는 중입니다]");
+					boolean findOther = ois.readBoolean();
+					if(findOther) {
+						System.out.println("[상대가 입장하였습니다]");
+						System.out.println("[게임이 시작됩니다]");
+					}
 					break;
 				} else {
 					System.out.println("[이미 존재하는 방 번호입니다]");
 					continue;
 				}
 			}
-			System.out.println("[상대가 입장하였습니다]");
-			System.out.println("[게임이 시작됩니다]");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

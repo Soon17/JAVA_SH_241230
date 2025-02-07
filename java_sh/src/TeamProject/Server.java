@@ -72,13 +72,31 @@ public class Server {
 
 	private void searchRoom(ObjectOutputStream oos, ObjectInputStream ois) {
 		try {
-			int roomNum = ois.readInt();
-			Room room = new Room(roomNum, oos);
-			if(roomList.contains(room)) {
-				oos.writeBoolean(true);
-			}
-			else {
-				oos.writeBoolean(false);
+			while(true) {
+				int roomNum = ois.readInt();
+				Room tmp = new Room(roomNum, null);
+				for (Room r : roomList) {
+					if(r.equals(tmp)) {
+						r.setOos2(oos);
+						
+						synchronized(chatList) {
+							for (ObjectOutputStream client : chatList) {
+								//메세지를 쓴 클라이언트에겐 메세지를 보내지 않음
+								if(client == oos) {
+									
+								} else {
+									
+								}
+							}				
+						}
+						oos.writeBoolean(true);
+						r.getOos1().writeBoolean(true);
+					}
+					else {
+						oos.writeBoolean(false);
+						oos.flush();
+					}
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,23 +104,26 @@ public class Server {
 	}
 
 	private void makeRoom(ObjectOutputStream oos, ObjectInputStream ois) {
-		System.out.println("[방을 개설해봅니다]");
-		roomList.add(new Room(15, null));
+		System.out.println("[방 번호 입력 대기 중]");
 		try {
-			int roomNum = ois.readInt();
-			System.out.println("[개설할 방 번호는" + roomNum + "]");
-			Room room = new Room(roomNum, oos);
-			boolean thereIs = roomList.contains(room);
-			System.out.println(thereIs);
-			if(thereIs) {
-				oos.writeBoolean(false);
-				send(oos, "[이미 존재함]");
-				System.out.println("false 전송");
-			}
-			else {
-				oos.writeBoolean(true);
-				System.out.println("true 전송");
-				roomList.add(room);
+			Room room;
+			while(true) {
+				int roomNum = ois.readInt();
+				room = new Room(roomNum, oos);
+				boolean exist = roomList.contains(room);
+				System.out.println(exist);
+				if(exist) {
+					oos.writeBoolean(false);
+					oos.flush();
+					System.out.println("false 전송");
+				}
+				else {
+					oos.writeBoolean(true);
+					oos.flush();
+					System.out.println("true 전송");
+					roomList.add(room);
+					break;
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -202,7 +223,7 @@ public class Server {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("대기실 송신 중 예기치 못한 오류 발생");
+			System.out.println("송신 중 예기치 못한 오류 발생");
 			e.printStackTrace();
 		}
 	}
