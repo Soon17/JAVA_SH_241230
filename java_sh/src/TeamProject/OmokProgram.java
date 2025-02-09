@@ -8,56 +8,59 @@ import java.util.Scanner;
 
 public class OmokProgram {
 
-	public OmokProgram() {
+	private ObjectOutputStream oos1;
+	private ObjectOutputStream oos2;
+	
+	boolean firstTurn = true;
+	boolean gameOver = false;
+	
+	boolean gOver = false;
+	int gCount = 0;
+	
+	List<Stone> blackList = new ArrayList<Stone>();
+	List<Stone> whiteList = new ArrayList<Stone>();
+	Field field = new Field();
+	
+	public OmokProgram(ObjectOutputStream oos1, ObjectOutputStream oos2) {
+		this.oos1 = oos1;
+		this.oos2 = oos2;
 	}
 	
-	static boolean firstTurn = true;
-	static boolean gameOver = false;
+	public void sendStone(String s) {
+		try {
+			gCount++;
+			if(gCount == 5) gOver = true;
+			
+			oos1.writeUTF(s);
+			oos1.writeBoolean(gOver);
+			oos1.flush();
+			oos2.writeUTF(s);
+			oos2.writeBoolean(gOver);
+			oos2.flush();
+			
+		} catch(Exception e) {}
+	}
 	
-	static List<Stone> blackList = new ArrayList<Stone>();
-	static List<Stone> whiteList = new ArrayList<Stone>();
-	static Field field = new Field();
-
-	public void run() {
-		field.printField();
-		Scanner sc = new Scanner(System.in);
-		
-		while(!gameOver) {
-			
-			firstTurn = field.isBlack();
-			
-			if(firstTurn) {
-				System.out.print("<흑돌 좌표 입력>");
-			} else {
-				System.out.print("<백돌 좌표 입력>");
-			}
-			
-			int x = -1, y = -1;
-			
-			System.out.print("(x, y) : ");
-			
+	public void turnStart(ObjectOutputStream oos) {
+		try{
+			oos.writeObject(field.printField());		// 필드 보여주기
+			oos.flush();
+		} catch(Exception e) {}
+	}
+	
+	public void input(ObjectOutputStream oos, int x, int y) {
+		Stone tmp = new Stone(x, y);
+		try {
 			try{
-				x = sc.nextInt();
-				y = sc.nextInt();
-			} catch(InputMismatchException e) {
-				System.out.println("[잘못된 입력입니다]");
-				sc.nextLine();
-				continue;
-			}
-			
-			Stone tmp = new Stone(x, y);
-			try{
-				//이미 돌이 있는 위치라면 continue
 				if(!blackList.contains(tmp)
 						&& !whiteList.contains(tmp)) {
 					
-					
 					//색깔에 맞는 리스트에 추가
-					if(firstTurn) {
+					if(oos == oos1) {
 						blackList.add(tmp);
-						if(!possibleSeat(tmp)) {
+						if(!possibleSeat(tmp, oos)) {
 							blackList.remove(tmp);
-							continue;
+							return;
 						}
 					} else {
 						whiteList.add(tmp);
@@ -65,56 +68,70 @@ public class OmokProgram {
 					//필드에 업데이트
 					field.setStone(x, y);
 					
+					oos.writeBoolean(true);						//oos에 true 전달
+					oos.writeObject(field.printField());		//oos에 필드 전달
+					oos.flush();						
+					
 					//다음 순서의 돌 색깔을바꿈
 					field.setBlack(!field.isBlack());
 				} else {
-					System.out.println("[해당위치에 이미 돌이 있습니다]");
-					continue;
+					oos.writeBoolean(false);					//oos에 false 전달
+					oos.writeObject("[해당위치에 이미 돌이 있습니다]");	//oos에 메세지 전달
+					oos.flush();
+					return;
 				}
+				
+				//흑 승리 시 게임 종료
+				if(winCheck(blackList, 5)) {
+					gameOver = true;
+				}
+				
+				//백 승리 시 게임 종료
+				if(winCheck(whiteList, 5)) {
+					gameOver = true;
+				}
+				
 			} catch(ArrayIndexOutOfBoundsException e) {
-				System.out.println("[필드 범위를 벗어났습니다]");
-				if(firstTurn) {
+				oos.writeBoolean(false);						//oos에 false 전달
+				oos.writeObject("[필드 범위를 벗어났습니다]");			//oos에 메세지 전달
+				oos.flush();
+				if(oos == oos1) {
 					blackList.remove(tmp);
 				} else {
 					whiteList.remove(tmp);
 				}
-				sc.nextLine();
-				continue;
 			}
-			
-			field.printField();
-//			System.out.println("Black " + blackList);
-//			System.out.println("White " + whiteList);
-			sc.nextLine();
-			
-			//흑 승리 시 게임 종료
-			if(winCheck(blackList, 5)) {
-				System.out.println("[흑이 승리하였습니다!]");
-				gameOver = true;
-			}
-			
-			//백 승리 시 게임 종료
-			if(winCheck(whiteList, 5)) {
-				System.out.println("[백이 승리하였습니다!]");
-				gameOver = true;
-			}
-		}
+		} catch(Exception e) {}
+		
 	}
 	
-	private boolean possibleSeat(Stone tmp) {
-		if(overSix()) {
-			System.out.println("[흑은 6목 이상 불가합니다]");
+	private boolean possibleSeat(Stone tmp, ObjectOutputStream oos) {
+		try {
+			
+			if(overSix()) {
+				oos.writeBoolean(false);						//turnPass에 false 전달
+				oos.writeObject("[흑은 6목 이상 불가합니다]");			//oos에 메시지 전달
+				oos.flush();
+				return false;
+			}
+			if(duplicateThree(tmp)) {
+				oos.writeBoolean(false);						//turnPass에 false 전달
+				oos.writeObject("[흑은 쌍삼이 불가합니다]");			//oos에 메세지 전달
+				oos.flush();
+				return false;
+			}
+			if(duplicateFour(tmp)) {
+				oos.writeBoolean(false);						//turnPass에 false 전달
+				oos.writeObject("[흑은 쌍사가 불가합니다]");			//oos에 메세지 전달
+				oos.flush();
+				return false;
+			}
+			
+			return true;
+			
+		} catch(Exception e) {
 			return false;
 		}
-		if(duplicateThree(tmp)) {
-			System.out.println("[흑은 쌍삼이 불가합니다]");
-			return false;
-		}
-		if(duplicateFour(tmp)) {
-			System.out.println("[흑은 쌍사가 불가합니다]");
-			return false;
-		}
-		return true;
 	}
 
 	private boolean duplicateThree(Stone tmp) {

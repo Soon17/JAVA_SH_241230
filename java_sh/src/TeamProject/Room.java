@@ -1,5 +1,7 @@
 package TeamProject;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +13,63 @@ public class Room {
 	
 	private int roomNum;
 	
-	private List<ObjectOutputStream> gamers = new ArrayList<ObjectOutputStream>();
+	private List<ObjectOutputStream> oosList = new ArrayList<ObjectOutputStream>();
+	private List<ObjectInputStream> oisList = new ArrayList<ObjectInputStream>();
 	
 	private boolean full = false;
+	private boolean gameOver = false;
+	private boolean allOut = false;
+	
 	
 	private OmokProgram omok;
 	
-	public Room(int roomNum) {
+	public Room(int roomNum, ObjectOutputStream oos, ObjectInputStream ois) {
 		this.roomNum = roomNum;
+		oosList.add(oos);
+		oisList.add(ois);
 	}
 	
-	public void runOmok(ObjectOutputStream oos1, ObjectOutputStream oos2) {
-		
-		omok = new OmokProgram();
-		omok.run();
+	public void setClient(ObjectOutputStream oos, ObjectInputStream ois) {
+		oosList.add(oos);
+		oisList.add(ois);
+		if(oosList.size() == 2) full = true;
 	}
 
+	public void gameStart(ObjectOutputStream oos, ObjectInputStream ois) {
+		ObjectOutputStream player1 = oosList.get(0);
+		ObjectOutputStream player2 = oosList.get(1);
+		omok = new OmokProgram(player1, player2);
+		try {
+			//선 턴이면 필드를 보여준다. 입력을 받고, 프로그램에 넘기고, 후턴의 입력을 기다린다.
+			//후 턴이면 선 턴의 입력을 기다리고, 필드를 보여주고, 입력을 받고, 프로그램에 넘긴다.
+			while(true) {
+				
+				if(oos == player2) {
+					System.out.println("흑의 턴을 기다리는 중");
+					boolean blackWin = ois.readBoolean();		// 선턴 입력 기다리기
+					if(blackWin) break;
+					System.out.println("흑의 턴을 받음");
+				}
+				
+				String stone = ois.readUTF();
+				omok.sendStone(stone);
+				if(omok.gOver) break;
+				
+				if(oos == player1) {
+					System.out.println("백의 턴을 기다리는 중");
+					boolean whiteWin = ois.readBoolean();		// 후턴 입력 기다리기
+					if(whiteWin) break;
+					System.out.println("백의 턴을 받음");	
+					
+				}
+			}
+			oos.writeUTF("[게임이 종료되었습니다]");
+			oos.flush();
+			
+		} catch(Exception e){}
+	}
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -38,16 +81,11 @@ public class Room {
 		Room other = (Room) obj;
 		return roomNum == other.roomNum;
 	}
-	
-	public void setClient(ObjectOutputStream oos) {
-		gamers.add(oos);
-		if(gamers.size() == 2) full = true;
-	}
 
 	@Override
 	public String toString() {
-		return "[" + roomNum + "번 방, 인원 " + gamers.size() + "명]";
+		return "[" + roomNum + "번 방, 인원 " + oosList.size() + "명]";
 	}
-	
+
 	
 }

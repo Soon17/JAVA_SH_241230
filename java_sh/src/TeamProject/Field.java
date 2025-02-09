@@ -1,10 +1,16 @@
 package TeamProject;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class Field {
+public class Field implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 424069390893113046L;
 	private final int maxField = 15;
 	private String[][] field = new String[maxField][maxField];
 	private boolean isBlack = true;
@@ -27,18 +33,20 @@ public class Field {
 	/**
 	 * 필드 출력 함수
 	 */
-	public void printField() {
+	public String printField() {
+		String fld = "";
 		for (int i = 0; i < field.length; i++) {
-			System.out.print("  " + Integer.toHexString(i));
+			fld += "  " + Integer.toHexString(i);
 		}
-		System.out.println();
+		fld += "\n";
 		for(int i = 0; i < field.length; i++) {
-			System.out.print(Integer.toHexString(i));
+			fld += Integer.toHexString(i);
 			for(int j = 0; j < field[i].length; j++) {
-				System.out.print(field[i][j]);
+				fld += field[i][j];
 			}
-			System.out.println();
+			fld += "\n";
 		}
+		return fld;
 	}
 	
 	/**

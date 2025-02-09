@@ -80,7 +80,7 @@ public class Server {
 			while(true) {
 				int roomNum = ois.readInt();
 				System.out.println("[" + oos + " 입장방 번호 " + roomNum + " 입력 받음]");
-				Room tmp = new Room(roomNum);
+				Room tmp = new Room(roomNum, oos, ois);
 				if(roomList.isEmpty() || !roomList.contains(tmp)) {
 					oos.writeBoolean(false);
 					send(oos, "[존재하지 않는 방입니다]");
@@ -89,8 +89,8 @@ public class Server {
 				for (Room room : roomList) {
 					if(room.equals(tmp)) {
 						if(!room.isFull()) {
-							room.setClient(oos);
-							for (ObjectOutputStream client : room.getGamers()) {
+							room.setClient(oos, ois);
+							for (ObjectOutputStream client : room.getOosList()) {
 								client.writeBoolean(true);
 								if(client == oos) {
 									send(client, "[" + roomNum + "번 방에 입장하였습니다]");
@@ -100,6 +100,7 @@ public class Server {
 								send(client, "[게임이 시작됩니다]");
 							}
 							System.out.println(roomList);
+							room.gameStart(oos, ois);
 							return;
 						} else {
 							oos.writeBoolean(false);
@@ -108,9 +109,7 @@ public class Server {
 					}
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {}
 	}
 
 	private void makeRoom(ObjectOutputStream oos, ObjectInputStream ois) {
@@ -120,7 +119,7 @@ public class Server {
 			while(true) {
 				int roomNum = ois.readInt();
 				System.out.println("[" + oos + " 생성방 번호 " + roomNum + " 입력 받음]");
-				room = new Room(roomNum);
+				room = new Room(roomNum, oos, ois);
 				boolean exist = roomList.contains(room);
 				if(exist) {
 					oos.writeBoolean(false);
@@ -128,16 +127,24 @@ public class Server {
 				}
 				else {
 					oos.writeBoolean(true);
-					send(oos, "[상대를 기다리는 중입니다]");
-					room.setClient(oos);
 					roomList.add(room);
 					System.out.println(roomList);
-					break;
+					send(oos, "[상대를 기다리는 중입니다]");
+					if(ois.readBoolean()) {
+						/*
+						 * 오목게임 진행
+						 */
+						room.gameStart(oos, ois);
+						break;
+					} else {
+						send(oos, "[대기를 중단합니다]");
+						roomList.remove(room);
+						break;
+					}
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			
+		} catch (IOException e) {}
 	}
 
 	private void chat(ObjectOutputStream oos, ObjectInputStream ois) {
@@ -145,11 +152,8 @@ public class Server {
 			String user = ois.readUTF();
 			System.out.println("[" + user + "님이 대기실에 입장했습니다]");
 			receive(user, oos, ois);
-		} catch(IOException e) {
-			e.printStackTrace();
 		} catch(Exception e) {
 			System.out.println("대기실 입장 중 예기치 못한 오류 발생");
-			e.printStackTrace();
 		}
 	}
 
@@ -213,7 +217,6 @@ public class Server {
 			}
 		} catch (Exception e) {
 			System.out.println("대기실 수신 중 예기치 못한 오류 발생");
-			e.printStackTrace();
 		}
 	}
 
@@ -233,8 +236,19 @@ public class Server {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("송신 중 예기치 못한 오류 발생");
-			e.printStackTrace();
+			System.out.println("메세지 송신 중 예기치 못한 오류 발생");
+		}
+	}
+	
+	private void send(ObjectOutputStream oos, Object obj) {
+		if(oos == null || obj == null) {
+			return;
+		}
+		try {
+				oos.writeObject(obj);
+				oos.flush();
+		} catch (Exception e) {
+			System.out.println("Object 송신 중 예기치 못한 오류 발생");
 		}
 	}
 }

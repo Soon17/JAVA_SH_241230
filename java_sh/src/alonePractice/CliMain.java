@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class CliMain {
 
@@ -16,15 +17,18 @@ public class CliMain {
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-            // 서버에 메시지 보내기
-            String message = "Hello from Client!";
-            outputStream.writeObject(message);
-
-            // 서버로부터 응답 받기
-            String response = (String) inputStream.readObject();
-            System.out.println("Received from server: " + response);
-
-            socket.close();
+            Scanner sc = new Scanner(System.in);
+            
+            while(true) {
+            	// 서버에 메시지 보내기
+            	System.out.println("메세지 입력: ");
+            	String message = sc.nextLine();
+            	outputStream.writeObject(message);
+            	
+            	// 서버로부터 응답 받기
+            	String response = (String) inputStream.readObject();
+            	System.out.println("Received from server: " + response);
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

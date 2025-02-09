@@ -81,6 +81,26 @@ public class Client {
 					System.out.println(ois.readUTF());
 					//시작 공지 수령
 					System.out.println(ois.readUTF());
+					boolean blackWin;
+					boolean myWin;
+					while(true) {
+						String blackstone = ois.readUTF();
+						System.out.println(blackstone);
+						blackWin = ois.readBoolean();
+						oos.writeBoolean(blackWin);
+						oos.flush();
+						if(blackWin) break;
+						System.out.print("좌표 입력:");
+						String stone = sc.next();
+						oos.writeUTF(stone);
+						oos.flush();
+						String myField = ois.readUTF();
+						System.out.println(myField);
+						myWin = ois.readBoolean();
+						if(myWin) break;
+					}
+					String gameOver = ois.readUTF();
+					System.out.println(gameOver);
 					break;
 				} else {
 					//입장 불가 공지 수령
@@ -106,10 +126,38 @@ public class Client {
 					System.out.println(ois.readUTF());
 					boolean findOther = ois.readBoolean();
 					if(findOther) {
-						//상대 입장 공지 수령
+						//상대 서버로부터 입장 공지 수령
 						System.out.println(ois.readUTF());
-						//게임 시작 공지 수령
+						//상대 서버로부터 게임 시작 공지 수령
 						System.out.println(ois.readUTF());
+						//자신의 서버로 입장을 알림
+						oos.writeBoolean(true);
+						oos.flush();
+						
+						/*
+						 * 오목 시작
+						 */
+						boolean whiteWin;
+						boolean myWin;
+						while(true) {
+							System.out.print("좌표 입력:");
+							String stone = sc.next();
+							oos.writeUTF(stone);
+							oos.flush();
+							String myField = ois.readUTF();
+							System.out.println(myField);
+							myWin = ois.readBoolean();
+							if(myWin) break;
+							String whitestone = ois.readUTF();
+							System.out.println(whitestone);
+							whiteWin = ois.readBoolean();
+							oos.writeBoolean(whiteWin);
+							oos.flush();
+							if(whiteWin) break;
+						}
+						String gameOver = ois.readUTF();
+						System.out.println(gameOver);
+						
 					}
 					break;
 				} else {
@@ -118,7 +166,7 @@ public class Client {
 					continue;
 				}
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -159,7 +207,7 @@ public class Client {
 		th.start();
 	}
 
-	private void receiveChat(ObjectInputStream ois) {
+	private void receiveChat (ObjectInputStream ois) {
 		try {
 			while(true) {
 				String s = ois.readUTF();
