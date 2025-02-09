@@ -46,7 +46,8 @@ public class Room {
 			while(true) {
 				
 				if(oos == player2) {
-					System.out.println("흑의 턴을 기다리는 중");
+					oos.writeUTF("[흑의 턴이 진행중입니다]");
+					oos.flush();
 					boolean blackWin = ois.readBoolean();		// 선턴 입력 기다리기
 					if(blackWin) break;
 					System.out.println("흑의 턴을 받음");
@@ -63,7 +64,8 @@ public class Room {
 				
 				
 				if(oos == player1) {
-					System.out.println("백의 턴을 기다리는 중");
+					oos.writeUTF("[백의 턴이 진행중입니다]");
+					oos.flush();
 					boolean whiteWin = ois.readBoolean();		// 후턴 입력 기다리기
 					if(whiteWin) break;
 					System.out.println("백의 턴을 받음");	

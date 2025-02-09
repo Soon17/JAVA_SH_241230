@@ -84,6 +84,8 @@ public class Client {
 					boolean blackWin;
 					boolean myWin;
 					while(true) {
+						String blackTurn = ois.readUTF();
+						System.out.println(blackTurn);
 						String blackstone = ois.readUTF();
 						System.out.println(blackstone);
 						blackWin = ois.readBoolean();
@@ -92,7 +94,7 @@ public class Client {
 						if(blackWin) break;
 						System.out.print("좌표 입력:");
 						
-						
+						sc.nextLine();
 						String stone = sc.next();
 						oos.writeUTF(stone);
 						oos.flush();
@@ -147,6 +149,7 @@ public class Client {
 							System.out.print("좌표 입력:");
 							
 							
+							sc.nextLine();
 							String stone = sc.next();
 							oos.writeUTF(stone);
 							oos.flush();
@@ -156,6 +159,8 @@ public class Client {
 							System.out.println(myField);
 							myWin = ois.readBoolean();
 							if(myWin) break;
+							String whiteTurn = ois.readUTF();
+							System.out.println(whiteTurn);
 							String whitestone = ois.readUTF();
 							System.out.println(whitestone);
 							whiteWin = ois.readBoolean();
