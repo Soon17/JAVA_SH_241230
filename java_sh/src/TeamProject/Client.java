@@ -91,9 +91,13 @@ public class Client {
 						oos.flush();
 						if(blackWin) break;
 						System.out.print("좌표 입력:");
+						
+						
 						String stone = sc.next();
 						oos.writeUTF(stone);
 						oos.flush();
+						
+						
 						String myField = ois.readUTF();
 						System.out.println(myField);
 						myWin = ois.readBoolean();
@@ -141,9 +145,13 @@ public class Client {
 						boolean myWin;
 						while(true) {
 							System.out.print("좌표 입력:");
+							
+							
 							String stone = sc.next();
 							oos.writeUTF(stone);
 							oos.flush();
+							
+							
 							String myField = ois.readUTF();
 							System.out.println(myField);
 							myWin = ois.readBoolean();

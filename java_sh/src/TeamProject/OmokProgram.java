@@ -29,7 +29,7 @@ public class OmokProgram {
 	public void sendStone(String s) {
 		try {
 			gCount++;
-			if(gCount == 5) gOver = true;
+			if(gCount == 6) gOver = true;
 			
 			oos1.writeUTF(s);
 			oos1.writeBoolean(gOver);

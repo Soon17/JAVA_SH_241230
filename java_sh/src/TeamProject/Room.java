@@ -42,6 +42,7 @@ public class Room {
 		try {
 			//선 턴이면 필드를 보여준다. 입력을 받고, 프로그램에 넘기고, 후턴의 입력을 기다린다.
 			//후 턴이면 선 턴의 입력을 기다리고, 필드를 보여주고, 입력을 받고, 프로그램에 넘긴다.
+			
 			while(true) {
 				
 				if(oos == player2) {
@@ -51,9 +52,15 @@ public class Room {
 					System.out.println("흑의 턴을 받음");
 				}
 				
+				
+				
 				String stone = ois.readUTF();
 				omok.sendStone(stone);
+				
+				
 				if(omok.gOver) break;
+				
+				
 				
 				if(oos == player1) {
 					System.out.println("백의 턴을 기다리는 중");
