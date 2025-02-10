@@ -16,6 +16,7 @@ public class OmokProgram {
 	private Field field = new Field();
 	
 	boolean gameOver = false;
+	
 	String winner;
 	final String startField = field.printField();
 	
@@ -34,13 +35,6 @@ public class OmokProgram {
 			oos2.writeBoolean(gameOver);
 			oos2.flush();
 			
-		} catch(Exception e) {}
-	}
-	
-	public void turnStart(ObjectOutputStream oos) {
-		try{
-			oos.writeObject(field.printField());		// 필드 보여주기
-			oos.flush();
 		} catch(Exception e) {}
 	}
 	
