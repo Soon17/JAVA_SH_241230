@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
@@ -32,8 +33,14 @@ public class Client {
 			do {
 				printMenu();
 				
-				menu = sc.nextInt();
-				sc.nextLine();
+				try{
+					menu = sc.nextInt();
+					sc.nextLine();
+				} catch(InputMismatchException e) {
+					System.out.println("[입력이 올바르지 않습니다]");
+					sc.nextLine();
+					continue;
+				}
 				
 				oos.writeInt(menu);
 				oos.flush();
@@ -72,7 +79,15 @@ public class Client {
 		try {
 			while(true) {
 				System.out.print("입장할 방의 번호를 입력하세요: ");
-				int roomNum = sc.nextInt();
+				int roomNum;
+				try{
+					roomNum = sc.nextInt();
+					sc.nextLine();
+				} catch(InputMismatchException e) {
+					System.out.println("[입력이 올바르지 않습니다]");
+					sc.nextLine();
+					continue;
+				}
 				oos.writeInt(roomNum);	
 				oos.flush();
 				
@@ -94,11 +109,19 @@ public class Client {
 						oos.writeBoolean(blackWin);
 						oos.flush();
 						if(blackWin) break;
-
+						
 						while(true) {
 							System.out.print("좌표 입력:");
-							int x = sc.nextInt();
-							int y = sc.nextInt();
+							int x = 0, y = 0;
+							try {
+								x = sc.nextInt();
+								y = sc.nextInt();
+								sc.nextLine();
+							} catch(InputMismatchException e) {
+								System.out.println("[입력이 올바르지 않습니다]");
+								sc.nextLine();
+								continue;
+							}
 							oos.writeInt(x);
 							oos.writeInt(y);
 							oos.flush();
@@ -139,7 +162,15 @@ public class Client {
 		try {
 			while(true) {
 				System.out.print("개설할 방의 번호를 입력하세요: ");
-				int roomNum = sc.nextInt();
+				int roomNum;
+				try{
+					roomNum = sc.nextInt();
+					sc.nextLine();
+				} catch(InputMismatchException e) {
+					System.out.println("[입력이 올바르지 않습니다]");
+					sc.nextLine();
+					continue;
+				}
 				oos.writeInt(roomNum);	
 				oos.flush();
 				boolean success = ois.readBoolean();
@@ -166,9 +197,18 @@ public class Client {
 						while(true) {
 							
 							while(true) {
+								
 								System.out.print("좌표 입력:");
-								int x = sc.nextInt();
-								int y = sc.nextInt();
+								int x = 0, y = 0;
+								try {
+									x = sc.nextInt();
+									y = sc.nextInt();
+									sc.nextLine();
+								} catch(InputMismatchException e) {
+									System.out.println("[입력이 올바르지 않습니다]");
+									sc.nextLine();
+									continue;
+								}
 								oos.writeInt(x);
 								oos.writeInt(y);
 								oos.flush();
@@ -229,7 +269,6 @@ public class Client {
 
 	private void sendChat(ObjectOutputStream oos) {
 		Thread th = new Thread(()->{
-			Scanner sc = new Scanner(System.in);
 			
 			try {
 				Thread.sleep(10);
@@ -264,7 +303,12 @@ public class Client {
 	}
 
 	private void printMenu() {
-		System.out.println("1. 채팅, 2. 방 만들기, 3. 방 들어가기, 4. 종료");
+		System.out.println("--------메뉴--------");
+		System.out.println("1. 대기실 입장하기");
+		System.out.println("2. 오목 게임 방 만들기");
+		System.out.println("3. 오목 게임 방 들어가기");
+		System.out.println("4. 종료하기");
+		System.out.println("-------------------");
 		System.out.print("메뉴 입력: ");
 	}
 }

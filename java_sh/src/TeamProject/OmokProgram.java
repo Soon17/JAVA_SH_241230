@@ -15,7 +15,6 @@ public class OmokProgram {
 	private List<Stone> whiteList = new ArrayList<Stone>();
 	private Field field = new Field();
 	
-	boolean firstTurn = true;
 	boolean gameOver = false;
 	String winner;
 	final String startField = field.printField();

@@ -135,6 +135,7 @@ public class Server {
 						 * 오목게임 진행
 						 */
 						room.gameStart(oos, ois);
+						roomList.remove(room);
 						break;
 					} else {
 						send(oos, "[대기를 중단합니다]");
