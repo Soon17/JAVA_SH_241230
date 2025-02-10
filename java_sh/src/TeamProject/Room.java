@@ -17,7 +17,6 @@ public class Room {
 	private List<ObjectInputStream> oisList = new ArrayList<ObjectInputStream>();
 	
 	private boolean full = false;
-	private boolean gameOver = false;
 	private boolean allOut = false;
 	
 	
@@ -40,7 +39,10 @@ public class Room {
 		ObjectOutputStream player2 = oosList.get(1);
 		omok = new OmokProgram(player1, player2);
 		try {
-			//선 턴이면 필드를 보여준다. 입력을 받고, 프로그램에 넘기고, 후턴의 입력을 기다린다.
+			//첫 필드는 모두에게 보여준다.
+			oos.writeUTF(omok.startField);
+			oos.flush();
+			//선 턴이면 입력을 받고, 프로그램에 넘기고, 후턴의 입력을 기다리고, 필드를 보여준다.
 			//후 턴이면 선 턴의 입력을 기다리고, 필드를 보여주고, 입력을 받고, 프로그램에 넘긴다.
 			
 			while(true) {
@@ -54,12 +56,16 @@ public class Room {
 				}
 				
 				
+				while(true) {
+					int x = ois.readInt();
+					int y = ois.readInt();
+					omok.input(oos, x, y);
+					boolean ternEnd = ois.readBoolean();
+					if(ternEnd) break;
+				}
 				
-				String stone = ois.readUTF();
-				omok.sendStone(stone);
 				
-				
-				if(omok.gOver) break;
+				if(omok.gameOver) break;
 				
 				
 				
@@ -72,7 +78,7 @@ public class Room {
 					
 				}
 			}
-			oos.writeUTF("[게임이 종료되었습니다]");
+			oos.writeUTF("[" + omok.winner + "이 승리하였습니다]");
 			oos.flush();
 			
 		} catch(Exception e){}

@@ -11,15 +11,14 @@ public class OmokProgram {
 	private ObjectOutputStream oos1;
 	private ObjectOutputStream oos2;
 	
+	private List<Stone> blackList = new ArrayList<Stone>();
+	private List<Stone> whiteList = new ArrayList<Stone>();
+	private Field field = new Field();
+	
 	boolean firstTurn = true;
 	boolean gameOver = false;
-	
-	boolean gOver = false;
-	int gCount = 0;
-	
-	List<Stone> blackList = new ArrayList<Stone>();
-	List<Stone> whiteList = new ArrayList<Stone>();
-	Field field = new Field();
+	String winner;
+	final String startField = field.printField();
 	
 	public OmokProgram(ObjectOutputStream oos1, ObjectOutputStream oos2) {
 		this.oos1 = oos1;
@@ -28,14 +27,12 @@ public class OmokProgram {
 	
 	public void sendStone(String s) {
 		try {
-			gCount++;
-			if(gCount == 6) gOver = true;
 			
 			oos1.writeUTF(s);
-			oos1.writeBoolean(gOver);
+			oos1.writeBoolean(gameOver);
 			oos1.flush();
 			oos2.writeUTF(s);
-			oos2.writeBoolean(gOver);
+			oos2.writeBoolean(gameOver);
 			oos2.flush();
 			
 		} catch(Exception e) {}
@@ -68,32 +65,34 @@ public class OmokProgram {
 					//필드에 업데이트
 					field.setStone(x, y);
 					
-					oos.writeBoolean(true);						//oos에 true 전달
-					oos.writeObject(field.printField());		//oos에 필드 전달
-					oos.flush();						
+					//흑 승리 시 게임 종료
+					if(winCheck(blackList, 5)) {
+						winner = "흑";
+						gameOver = true;
+					}
+					
+					//백 승리 시 게임 종료
+					if(winCheck(whiteList, 5)) {
+						winner = "백";
+						gameOver = true;
+					}
+					
+					oos.writeBoolean(true);							//oos에 true 전달
+					sendStone(field.printField());					//모든 oos에 필드 전달
+					oos.flush();
 					
 					//다음 순서의 돌 색깔을바꿈
 					field.setBlack(!field.isBlack());
 				} else {
-					oos.writeBoolean(false);					//oos에 false 전달
-					oos.writeObject("[해당위치에 이미 돌이 있습니다]");	//oos에 메세지 전달
+					oos.writeBoolean(false);						//oos에 false 전달
+					oos.writeUTF("[해당위치에 이미 돌이 있습니다]");		//oos에 메세지 전달
 					oos.flush();
 					return;
 				}
 				
-				//흑 승리 시 게임 종료
-				if(winCheck(blackList, 5)) {
-					gameOver = true;
-				}
-				
-				//백 승리 시 게임 종료
-				if(winCheck(whiteList, 5)) {
-					gameOver = true;
-				}
-				
 			} catch(ArrayIndexOutOfBoundsException e) {
-				oos.writeBoolean(false);						//oos에 false 전달
-				oos.writeObject("[필드 범위를 벗어났습니다]");			//oos에 메세지 전달
+				oos.writeBoolean(false);							//oos에 false 전달
+				oos.writeUTF("[필드 범위를 벗어났습니다]");				//oos에 메세지 전달
 				oos.flush();
 				if(oos == oos1) {
 					blackList.remove(tmp);
@@ -109,20 +108,20 @@ public class OmokProgram {
 		try {
 			
 			if(overSix()) {
-				oos.writeBoolean(false);						//turnPass에 false 전달
-				oos.writeObject("[흑은 6목 이상 불가합니다]");			//oos에 메시지 전달
+				oos.writeBoolean(false);							//oos에 false 전달
+				oos.writeUTF("[흑은 6목 이상 불가합니다]");			//oos에 메시지 전달
 				oos.flush();
 				return false;
 			}
 			if(duplicateThree(tmp)) {
-				oos.writeBoolean(false);						//turnPass에 false 전달
-				oos.writeObject("[흑은 쌍삼이 불가합니다]");			//oos에 메세지 전달
+				oos.writeBoolean(false);							//oos에 false 전달
+				oos.writeUTF("[흑은 쌍삼이 불가합니다]");				//oos에 메세지 전달
 				oos.flush();
 				return false;
 			}
 			if(duplicateFour(tmp)) {
-				oos.writeBoolean(false);						//turnPass에 false 전달
-				oos.writeObject("[흑은 쌍사가 불가합니다]");			//oos에 메세지 전달
+				oos.writeBoolean(false);							//oos에 false 전달
+				oos.writeUTF("[흑은 쌍사가 불가합니다]");				//oos에 메세지 전달
 				oos.flush();
 				return false;
 			}

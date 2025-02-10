@@ -81,6 +81,8 @@ public class Client {
 					System.out.println(ois.readUTF());
 					//시작 공지 수령
 					System.out.println(ois.readUTF());
+					//첫 필드 수령
+					System.out.println(ois.readUTF());
 					boolean blackWin;
 					boolean myWin;
 					while(true) {
@@ -92,13 +94,27 @@ public class Client {
 						oos.writeBoolean(blackWin);
 						oos.flush();
 						if(blackWin) break;
-						System.out.print("좌표 입력:");
-						
-						sc.nextLine();
-						String stone = sc.next();
-						oos.writeUTF(stone);
-						oos.flush();
-						
+
+						while(true) {
+							System.out.print("좌표 입력:");
+							int x = sc.nextInt();
+							int y = sc.nextInt();
+							oos.writeInt(x);
+							oos.writeInt(y);
+							oos.flush();
+							boolean ternEnd = ois.readBoolean();
+							if(ternEnd) {
+								oos.writeBoolean(ternEnd);
+								oos.flush();
+								break;
+							}
+							else {
+								oos.writeBoolean(ternEnd);
+								oos.flush();
+								String reInput = ois.readUTF();
+								System.out.println(reInput);
+							}
+						}
 						
 						String myField = ois.readUTF();
 						System.out.println(myField);
@@ -143,17 +159,32 @@ public class Client {
 						/*
 						 * 오목 시작
 						 */
+						// 첫 필드 수령
+						System.out.println(ois.readUTF());
 						boolean whiteWin;
 						boolean myWin;
 						while(true) {
-							System.out.print("좌표 입력:");
 							
-							
-							sc.nextLine();
-							String stone = sc.next();
-							oos.writeUTF(stone);
-							oos.flush();
-							
+							while(true) {
+								System.out.print("좌표 입력:");
+								int x = sc.nextInt();
+								int y = sc.nextInt();
+								oos.writeInt(x);
+								oos.writeInt(y);
+								oos.flush();
+								boolean ternEnd = ois.readBoolean();
+								if(ternEnd) {
+									oos.writeBoolean(ternEnd);
+									oos.flush();
+									break;
+								}
+								else {
+									oos.writeBoolean(ternEnd);
+									oos.flush();
+									String reInput = ois.readUTF();
+									System.out.println(reInput);
+								}
+							}
 							
 							String myField = ois.readUTF();
 							System.out.println(myField);
