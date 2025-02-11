@@ -205,7 +205,8 @@ public class OmokProgram {
 			List<Stone> tmpList = new ArrayList<Stone>();
 			Stone minStone = null;
 			Stone maxStone = null;
-			//해당 인덱스 입장에서 리스트에 포함된 4개의 자리를 정의
+			int oneLineCount = 0;
+			//해당 인덱스 입장에서 리스트에 포함된 5개의 자리를 정의
 			for (int j = 0; j < 5; j++) {
 				Stone sMember = new Stone(tmp.getX() + dx * (j - i), tmp.getY() + dy * (j - i));
 				//리스트의 왼쪽밖 인덱스 자리
