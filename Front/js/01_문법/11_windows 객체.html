@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>windows 객체</title>
+
+	<style>
+		.btn-up{
+			position: fixed; bottom: 10px; right: 10px;
+			width: 50px; height: 50px; border-radius: 50%;
+			border: 3px solid black; background: #ff0;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body style="height: 2000px;">
+	<button type="button" onclick="newWindowOpen()">새창열기</button>
+	<button type="button" onclick="newWindowClose()">새창닫기</button>
+	<button type="button" class="btn-up" onclick="moveUp()">위로</button>
+	<hr>
+
+	<button type="button" onclick="afterTwoSecond()">2초 뒤 실행</button>
+	<button type="button" onclick="stopTwoSecond()">2초 뒤 실행 중지</button>
+	<hr>
+
+	<button type="button" onclick="intervalSecond()">1초 마다 실행</button>
+	<button type="button" onclick="stopSecond()">1초 마다 실행 중지</button>
+
+	<script>
+		/*
+		windows 객체 : 브라우저의 최상위 객체
+			- 새 창이 열릴때마다 windows객체가 생성
+			- windows 객체 메소드들은 windows를 생략할 수 있음
+				- windows.alert() => alert()
+			- 메소드
+				- open('경로', target, '옵션')
+					- 새 창을 열고, 연 자식창의 아이디 값을 반환
+				- close()
+					- 지정된 창을 닫음
+				- scrollTo(옵션)
+					- 지정된 위치로 스크롤을 이동
+						- 옵션은 객체로 고정
+						- 옵션값에 따라 부드럽게 이동
+		*/
+
+		var childId = null;
+
+		function newWindowOpen(){
+			if(childId){
+				alert("이미 새 창이 열려있습니다.");
+				return;
+			}
+			childId = open("09_배열객체.html", "_blank", "width=400, height=400, top=100, left=100");
+		}
+
+		function newWindowClose(){
+			if(!childId){
+				alert("열려있는 새 창이 없습니다.");
+				return;
+			}
+			childId.close();
+			childId = null;
+		}
+
+		function moveUp(){
+			window.scrollTo({
+				top : 0,
+				behavior : 'smooth'
+			})
+		}
+
+		/*
+		windows 객체의 대표적인 함수들
+
+		setTimeOut(콜백함수, 시간)
+			- 지정된 시간이 지나면 콜백함수를 호출
+			- 생성된 timeout 아이디를 반환
+		clearTimeOut(id)
+			- 아이디와 일치하는 timeout을 제거
+		setInterval(콜백함수, 시간)
+			- 일정시간마다 콜백함수를 호출
+			- 생성된 interval 아이디를 반환
+		clearInterval(아이디)
+			- 아이디와 일치하는 interval을 제거
+		*/
+		var timeoutId = null;
+		var intervalId = null;
+		var count = 0;
+
+		function afterTwoSecond(){
+			//여러번 실행되는것을 방지하기 위해
+			if(timeoutId) {
+				console.log("이미 실행중인 setTime이 있습니다");
+				return;
+			}
+			timeoutId = setTimeout(() => {
+				console.log("2초 뒤입니다.");
+			}, 2000);
+		}
+
+		function stopTwoSecond(){
+			//실행 중인 timeout이 없으면 종료
+			if(!timeoutId) {
+				console.log("실행중인 setTime이 없습니다");
+				return;
+			}
+			clearTimeout(timeoutId);
+			timeoutId = null;
+			console.log("2초 뒤 실행을 중단합니다.")
+		}
+
+		function intervalSecond(){
+			if(intervalId) {
+				console.log("이미 실행중인 interval이 있습니다");
+				return;
+			}
+			intervalId = setInterval(() => {
+				count++;
+				console.log(`${count}초`);
+			}, 1000)
+		}
+
+		function stopSecond(){
+			if(!intervalId) {
+				console.log("실행중인 interval이 없습니다");
+				return;
+			}
+			clearInterval(intervalId);
+			intervalId = null;
+			console.log("interval 실행을 중지하였습니다.");
+		}
+
+		/*
+		windows 객체의 대표적인 함수들
+		
+		onload
+			- 윈도우 객체가 로딩이 완료되면 실행하는 메소드
+			- 여러개 정의되면 마지막 메소드만 적용
+		*/
+
+		//아이디가 btn1인 요소가 배치되기 전에 이벤트를 등록하기 때문에 에러가 발생
+		// btn1.onclick = () => alert("버튼1");
+
+		window.onload = () => {
+			//윈도우가 다 로딩되고 btn3인 요소에 이벤트를 등록
+			btn3.onclick = () => alert("버튼3");
+		}
+	</script>
+
+
+	<hr>
+	<button id="btn1">버튼1</button>
+	<button id="btn2">버튼2</button>
+	<button id="btn3">버튼3</button>
+	<script>
+		btn2.onclick = () => alert("버튼2");
+	</script>
+</body>
+</html>

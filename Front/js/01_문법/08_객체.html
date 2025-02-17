@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>객체</title>
+	
+	<script>
+		/*
+		객체 선언 방법
+		1. {}를 이용하여 재사용이 안되는 객체를 생성
+			- 같은 속성을 가지는 객체를 생성하려면 직접 추가(복붙)
+			- 속성은 값이 될 수도 있고, 함수도 될 수 있고 객체가 될 수도 있음
+		var 객체명 = {
+			속성명 : 값,
+			속성명 : 값
+		}
+
+		객체에 있는 속성들을 호출하는 방법
+			1. 객체명.속성명
+			2. 객체명['속성명']
+
+		객체에 새로운 속성을 추가
+			1. 객체명.새속성명 = 값;
+			2. 객체명.새함수명 = () => {}
+
+		객체에 있는 속성을 삭제
+			delete 객체명.속성명;
+		*/
+
+		document.write("<h3>{}를 이용하여 객체 생성</h3>");
+		var person = {
+			name : "홍길동",
+			age : 21,
+			toString : function(){
+				return this.name + " : " + this.age;
+			}
+		};
+
+		document.write(person.toString(), "<br>");
+
+		//객체에 새로운 속성을 추가(변수와 함수)
+		person.addr = "서울시";
+		person.printAddr = function(){
+			document.write("속성 추가 : " + this.addr, "<br>");
+		}
+
+		//새로 추가된 함수를 호출
+		person.printAddr();
+
+		//객체의 메소드 삭제(이후 호출 불가)
+		delete person.printAddr;
+
+		document.write('<hr>');
+
+		/*
+		객체 선언 방범
+		2. 객체 생성 함수를 사용
+			- 함수를 만들고, 함수의 리턴 값으로 객체를 전달
+		
+		function 함수명(v1, v2, ...){
+			return {
+				속성명 : v1,
+				속성명 : v2,
+				...
+			}
+		}
+		*/
+
+		document.write("<h3>객체 생성 함수를 이용하여 객체 생성</h3>");
+		function person2(name = "홍길동", age = 21){
+			return {
+				name : name,
+				age : age,
+				toString : function(){
+					return this.name + " : " + this.age;
+				}
+			}
+		}
+
+		var p1 = person2();
+		var p2 = person2("임꺽정", 30);
+
+		document.write(p1.toString(),"<br>");
+		document.write(p2.toString(),"<br>");
+
+		document.write("<hr>");
+
+		/*
+		객체 선언 방법
+		3. 생성자 함수를 활용
+			- this 키워드를 활용
+			- new를 이용해서 객체를 생성
+			- 일반적으로 생성자 함수는 대문자로 시작
+
+		function 생성자(v1, v2, ...){
+			this.속성명1 = v1;
+			this.속성명2 = v2;
+			...
+		}
+		*/
+
+		document.write("<h3>생성자 함수를 이용하여 객체 생성</h3>");
+		function Person3(name = "홍길동", age = "23"){
+			this.name = name;
+			this.age = age;
+			this.toString = () => this.name + " : " + this.age;
+		}
+
+		var p3 = new Person3();
+		var p4 = new Person3("임꺽정", 22);
+
+		document.write(p3.toString(), "<br>");
+		document.write(p4.toString(), "<br>");
+
+		//객체에 메소드를 추가하면 해당 객체에만 추가됨
+		document.write("<br>1년 후 <br>");
+		//p3 객체에 old 메소드를 추가
+		p3.old = function(){
+			this.age++;
+		}
+		p3.old();
+		document.write(p3.toString(), "<br>");
+		// p4.old(); //p4 객체에는 old메소드가 없음
+		document.write(p4.toString(), "<br>");
+
+		//prototype을 이용해서 생성자에 메소드를 추가하면 모든 객체에 추가됨
+		//생성자명.prototype.메소드명 = function(){}
+
+		document.write("<br>또다시 1년 후 <br>");
+		Person3.prototype.oldAge = function(){
+			this.age++;
+		}
+		p3.oldAge();
+		p4.oldAge();
+		document.write(p3.toString(), "<br>");
+		document.write(p4.toString(), "<br>");
+
+		document.write("<hr>");
+
+		/*
+		객체 선언 방법
+		4. 클래스를 이용
+		class 클래스명 {
+			constructor(v1, v2, ...){
+				this.속성명1 = v1;
+				this.속성명2 = v2;
+				...
+			}
+			함수명(){
+			
+			}
+		}
+		*/
+
+		class Person4{
+			constructor(name = "홍길동", age = 29){
+				this.name = name;
+				this.age = age;
+			}
+			toString = () => this.name + " : " + this.age;
+		}
+
+		document.write("<h3>클래스를 이용하여 객체 생성</h3>");
+		
+		var p5 = new Person4();
+		var p6 = new Person4("임꺽정", 33);
+
+		document.write(p5.toString(), "<br>");
+		document.write(p6.toString(), "<br>");
+
+		Person4.prototype.oldYear = function(){
+			this.age++;
+		}
+		p5.oldYear();
+		p6.oldYear();
+
+		document.write("<br>1년 후 <br>");
+		document.write(p5.toString(), "<br>");
+		document.write(p6.toString(), "<br>");
+
+
+		document.write("<hr>");
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

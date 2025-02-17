@@ -150,19 +150,38 @@
 			if(age >= 20) adultFunc();
 			else notAdultFunc();
 		}
-
+		
+		function adultFunc(){
+			document.write("20세 이상은 성인입니다.<br>");
+		}
+		
+		function notAdultFunc(){
+			document.write("20세 미만은 미성년자입니다.<br>");
+		}
+		
 		checkAdult(25, () => {
 			document.write("성인입니다.<br>");
 		}, () => {
 			document.write("미성년자입니다.<br>");
 		});
-
-		checkAdult(25, () => {
+		
+		checkAdult(19, () => {
 			document.write("성인은 술과 담배를 구매할 수 있습니다.<br>");
 		}, () => {
-			document.write("미성년자는 과 담배를 구매할 수 없습니다,.<br>");
+			document.write("미성년자는 술과 담배를 구매할 수 없습니다.<br>");
 		});
+		
+		checkAdult(20, adultFunc, notAdultFunc);
 
+		/*
+		매개변수 초기화
+			- 매개변수 선언할 때 초기값을 지정
+		*/
+		function greet(name = "Kim"){
+			document.write(`Hello, ${name}!<br>`);
+		}
+		greet("Hong");
+		greet();
 	</script>
 </head>
 <body>
