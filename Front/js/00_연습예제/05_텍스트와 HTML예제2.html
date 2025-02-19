@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>페이지네이션</title>
+</head>
+<body>
+	<!-- 페이지를 관리하는 버튼으로 이루어진 코드를 작성하세요. -->
+
+	<button type="button" class="prev-btn" onclick="addPage(-1)"><</button>
+	<span>
+		<span class="current-page">1</span>
+		<span> / </span>
+		<span class="max-page">6</span>
+	</span>
+	<button type="button" class="next-btn" onclick="addPage(1)">></button>
+	
+	<script>
+		const currentPageEl = document.querySelector(".current-page");
+		const maxPageEl = document.querySelector(".max-page");
+
+		function addPage(num){
+			let currentPage = currentPageEl.innerText;
+			let maxPage = maxPageEl.innerText;
+
+			currentPage = +currentPage + num;
+
+			if(currentPage < 1) currentPage = maxPage;
+			if(currentPage > maxPage) currentPage = 1;
+
+			currentPageEl.innerText = currentPage;
+		}
+
+	</script>
+</body>
+</html>

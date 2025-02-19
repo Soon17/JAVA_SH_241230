@@ -12,15 +12,28 @@
 	오늘의 할 일이 추가 되도록 작성해보세요.
 	-->
 
-	<input type="text" id="toDo" placeholder="오늘의 할 일을 입력하세요.">
-	<button id="btn">추가</button>
+	<input type="text" id="todo" placeholder="오늘의 할 일을 입력하세요.">
+	<button type="button" id="btn">추가</button>
 	<h1>오늘의 할 일</h1>
 	<ul class="todo-list">
 		<li class="todo-item">오늘의 할 일 예시</li>
 	</ul>
 
 	<script>
-		const btn = document.
+		const btn = document.getElementById("btn");
+		const textEl = document.getElementById("todo");
+		const todoList = document.getElementsByClassName("todo-list")[0];
+		btn.addEventListener("click", () => {
+			let text = textEl.value;
+
+			textEl.value = '';
+
+			let todo = `<li class="todo-item">${text}</li>`;
+
+			let html = todoList.innerHTML;
+			
+			todoList.innerHTML = html + todo;
+		});
 	</script>
 </body>
 </html>
