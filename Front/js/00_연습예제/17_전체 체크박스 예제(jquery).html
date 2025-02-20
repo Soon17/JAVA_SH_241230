@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>전체 체크박스 예제</title>
+
+	<script src="../../static/js/jquery.min.js"></script>
+</head>
+<body>
+	<input type="checkbox" id="all">
+	<label for="all">전체</label>
+	<br>
+	<input type="checkbox" name="email">
+	<br>
+	<input type="checkbox" name="email">
+	<br>
+	<input type="checkbox" name="email">
+	<br>
+	<input type="checkbox" name="email">
+	<br>
+
+	<script>
+		// const all = document.querySelector("#all");
+		// const checkboxes = document.querySelectorAll("[name=email]");
+
+		// all.addEventListener("change", e => {
+		// 	let checked = all.checked;
+
+		// 	checkboxes.forEach(c => {
+		// 		c.checked = checked;
+		// 	});
+		// })
+
+		$("#all").click(function(){
+			let checked = $(this).prop("checked")
+			$("[name=email]").prop("checked", checked);
+		});
+		
+		// checkboxes.forEach(c => {
+			// 	c.addEventListener("change", e => {
+				// 		let checked = c.checked;
+				
+				// 		if(!checked) {
+					// 			all.checked = false;
+		// 			return;
+		// 		}
+		
+		// 		//체크박스의 상태가 현재 c와 같은 요소들을 선택
+		// 		let selector = "[name=email]:checked";
+		// 		let sameCheckboxes = document.querySelectorAll(selector);
+		
+		// 		//선택된 요소의 수가 checkboxes의 수와 같다면 전체 체크박스의 checked를 c와 같게 수정
+		// 		if(sameCheckboxes.length == checkboxes.length)
+		// 			all.checked = c.checked;
+		// 	})
+		// })
+
+		$("[name=email]").click(function(){
+			let checked = $(this).prop("checked");
+		
+			if(!checked){
+				$("#all").prop("checked", checked);
+				return;
+			}
+		
+			let checkedCount = $("[name=email]:checked").length;
+			let totalCount = $("[name=email]").length;
+		
+			if(checkedCount == totalCount){
+				$("#all").prop("checked", checked);
+			}
+		})
+		</script>
+</body>
+</html>

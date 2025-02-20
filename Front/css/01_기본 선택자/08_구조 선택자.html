@@ -14,7 +14,7 @@
 		- 숫자가 오면 숫자번째 형제 요소
 		- 수식이 오면 수식에 맞는 형제 요소
 			- nth-child(2n) : 짝수번째 요소
-			- ntd-child(2n+1) : 홀수번째 요소
+			- nth-child(2n+1) : 홀수번째 요소
 
 		:nth-last-child(n)
 		- 뒤에서 n번째 형제 요소
@@ -29,26 +29,26 @@
 		*/
 		/* .box1 .list :nth-child(1){color: red;} */
 		/* .box1 .list :first-child{color: red;} */
-		/* .box1 .list :nth-child(2n){color: red;} */
-		.box1 .list :last-child{color: red;}
+		.box1 .list :nth-child(3n-1){color: red;}
+		/* .box1 .list :last-child{color: red;} */
 
 		/* 
 		형태 구조 선택자
 		- 선택자와 일치하는 형제 요소들 중 몇번째 요소인지 선택하는 선택자
 		- 이 때, 선택자는 태그 선택자만 가능
 
-		:nth-of-type(n)
+		선택자:nth-of-type(n)
 		- 선택자 형제들 중에서 n번째 요소
 			- n이 숫자 : n번째
 			- n이 수식 : 수식번째마다 있는 요소 선택
 
-		:last-of-type
+		선택자:first-of-type
 			- 선택자 형제들 중에서 첫번째 요소
 
-		:last-of-type
+		선택자:last-of-type
 			- 선택자 형제들 중에서 마지막 요소
 
-		:nth-last-of-type(n)
+		선택자:nth-last-of-type(n)
 			- 선택자 형제들 중에서 뒤에서 n번째 요소
 		*/
 		/* .box2 .list span:first-of-type{color: red;} */
@@ -59,12 +59,18 @@
 </head>
 <body>
 	<div class="box1">
-		<div class="list">
-			<span class="item">1</span>
-			<p class="item">2</p>
-			<span class="item">3</span>
-			<p class="item">4</p>
-			<span class="item">5</span>
+		<div class="lala">
+			<div class="list">
+				<span class="item">1</span>
+				<p class="item">2</p>
+				<span class="item">3</span>
+				<p class="item">4</p>
+				<span class="item">5</span>
+				<p class="item">6</p>
+				<span class="item">7</span>
+				<p class="item">8</p>
+				<span class="item">9</span>
+			</div>
 		</div>
 	</div>
 	<hr>

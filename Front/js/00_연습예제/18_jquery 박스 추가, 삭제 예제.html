@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jquery 박스 추가, 삭제 예제</title>
+
+	<style>
+		.add-btn{
+			cursor: pointer; height: 50px; background: #fff;
+			border: 1px solid black; border-radius: 5px;
+		}
+		.add-btn:active{
+			background-color: rgba(0,0,0,0.1);
+		}
+		.box{
+			border: 3px solid black; padding: 20px; margin-top: 10px;
+			border-radius: 10px; height: 30px;
+		}
+		.close-btn{
+			float: right; width: 30px; height: 30px; line-height: 30px;
+			text-decoration: none; font-size: 20px; text-align: center;
+		}
+	</style>
+	<script src="../../static/js/jquery.min.js"></script>
+</head>
+<body>
+	<button type="button" class="add-btn">박스 추가</button>
+	<div class="container">
+		<div class="box">
+			1<a href="#" class="close-btn">&times;</a>
+		</div>
+	</div>
+
+	<script>
+		$(".add-btn").click(() => {
+			const num = parseInt($(".box").last().text()) + 1;
+			const box = `<div class="box">
+				${num}<a href="#" class="close-btn">&times;</a>
+				</div>`;
+			$(".container").append(box);
+		});
+
+		$(document).on("click", ".close-btn", function(){
+			const dlt = confirm("이 박스를 삭제하시겠습니까?");
+			if(dlt) {
+				const count = $(".box").length;
+				if(count==1){
+					alert("최소 1개 이상의 박스가 필요합니다.");
+					return;
+				}
+				$(this).parent().remove();
+			}
+		})
+	</script>
+</body>
+</html>

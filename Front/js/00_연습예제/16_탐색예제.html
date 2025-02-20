@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>탐색 예제</title>
+
+	<style>
+		.table{
+			width: 100%;
+			border-collapse: collapse;
+		}
+		thead>tr :first-child{
+			text-align: left;
+		}
+		.table td, .table th{
+			border: 1px solid black;
+			border-width: 1px 0;
+			height: 50px;
+		}
+		tfoot>tr :first-child{
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					<input type="checkbox" id="all">
+					<label for="all">전체 선택</label>
+				</th>
+				<th>제품명</th>
+				<th>가격</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<input type="checkbox" name="pr-num" val="3" checked>
+				</td>
+				<td>
+					<a href="#" class="pr-link">마우스</a>
+				</td>
+				<td>
+					<span class="pr-price">10000</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="pr-num" value="6">
+				</td>
+				<td>
+					<a href="#" class="pr-link">키보드</a>
+				</td>
+				<td>
+					<span class="pr-price">50000</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="pr-num" value="13" checked>
+				</td>
+				<td>
+					<a href="#" class="pr-link">USB</a>
+				</td>
+				<td>
+					<span class="pr-price">5000</span>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="2">합계</td>
+				<td class="total-price">~~~</td>
+			</tr>
+		</tfoot>
+</body>
+</html>
