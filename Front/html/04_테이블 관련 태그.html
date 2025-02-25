@@ -58,7 +58,7 @@
 			- 열의 스타일을 적용하는 태그
 		-->
 		
-		<table border="1">
+		<table border="10">
 			<thead>
 				<tr>
 					<th>번호</th>
@@ -87,9 +87,9 @@
 		<figure>
 			<table border="1">
 				<colgroup>
-					<col style="background-color: yellow;"> 
 					<col>
 					<col>
+					<col style="background-color: yellow;">
 					<col>
 				</colgroup>
 				<thead>
@@ -102,9 +102,7 @@
 				</thead>
 				
 				<tfoot>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td colspan="3"></td>
 					<td>테스트</td>
 				</tfoot>
 	
@@ -150,5 +148,25 @@
 				<td colspan="2">95</td>
 			</tr>
 		</table>
+
+
+		<table class="tbl">
+			<tr>
+				<td colspan="2"></td>
+				<td rowspan="2"></td>
+			</tr>
+			<tr>
+				<td rowspan="2"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="2"></td>
+			</tr>
+		</table>
+		<style>
+			.tbl td, .tbl th{
+				border: 20px solid black;
+			}
+		</style>
 </body>
 </html>
