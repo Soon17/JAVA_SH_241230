@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>transform</title>
+	<style>
+		/* 
+		transform
+		- 요소를 변형하는 속성
+		- 함수와 함께 사용
+		
+		1. translate?
+		- 주어진 방향으로 이동하는 함수
+		- 없음 : x,y축 방향으로 이동
+		- X : x축 방향
+		  - translateX(-50%) 를 하면 요소의 너비의 반만큼 앞으로 당겨짐
+		- Y : y축 방향
+		- Z : z축 방향
+		- 3d: x,y,z축 방향
+		- z축으로 이동하는 경우 부모 요소에 persprective 요소를 적용해야
+		  깊이를 명확히 느낄 수 있다
+		*/
+		.box{
+			width: 200px; height: 100px; margin-bottom: 100px;
+			border: 3px solid black;
+			display: flex;
+			align-items: flex-end;		/*세로 방향으로 하단 정렬*/
+            justify-content: flex-end;	/*가로 방향으로 우측 정렬*/
+		}
+		.translate-container{perspective: 500px; padding: 100px;}
+		.t1{transform: translateX(50px);}
+		.t2{transform: translateY(50px);}
+		.t3{transform: translate(50px, 50px);}
+		.t4{transform: translateZ(100px);}
+		.t5{transform: translate3d(50px, 50px, -100px);}
+		/* 
+		2. scale?
+		- 요소를 확대/축소하는 함수
+		- 없음 : x,y축으로 확대/축소
+		- X : x축 방향으로 확대/축소
+		- Y : y축 방향으로 확대/축소
+		- Z : z축 방향으로 확대/축소
+		- 3d: x,y,z축 방향으로 확대/축소
+		- z축 방향으로 확대/축소하는 경우 부모 요소에 perspective
+		  요소를 적용해야 깊이를 더 느낄 수 있다
+		*/
+		.scale-container{perspective: 500px; padding: 100px;}
+		.scale-container .box{
+			width: 100px; height: 100px; margin-bottom: 100px;
+			border: 3px solid black;
+		}
+		.s1{transform: scale(2);}
+		.s2{transform: scaleX(2);}
+		.s3{transform: scaleY(0.5);}
+		.s4{transform: scaleZ(2);}
+		.s5{transform: scale3d(2, 0.5, 10);}
+		/* 
+		3. rotate?
+		- 요소를 회전 시키는 함수
+		- 회전하기 때문에 요소의 모양이 바뀌진 않음
+		*/
+		.rotate-container .box{
+			background-image: url(../../img/dog.jpg);
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+		.r1{transform: perspective(500px) rotateX(50deg);}
+		.r2{transform: perspective(500px) rotateY(50deg);}
+		.r3{transform: rotate(50deg);}	/*z 회전과 동일*/
+		.r4{transform: rotateZ(50deg);}
+		/* 
+		4. skew
+		- 요소를 비트는 함수
+		- 모양이 변경
+		*/
+		.sk1{transform: skewX(30deg);}
+		.sk2{transform: skewY(30deg);}
+		/* 
+		transform-orign
+		- transform을 이용해서 요소를 변경시킬 때 기준점을 설정
+		*/
+		.origin-container .box{
+			transform: scale(2);
+			transform-origin: 0 0;
+		}
+		/* 
+		transform-style
+		- 여러가지 변형을 동시에 하는 경우 부모 요소에 적용한 3d 변경을
+		  하위 요소에 적용하는 속성
+		- flat : 하위 요소를 평면으로 처리
+		- preserve-3d : 하위 요소에 3d 효과를 적용
+		*/
+		.style-container > div{margin-bottom: 50px;}
+		.style-container .inner-box{
+			width: 100px; height: 100px; background: gray;
+			transform:perspective(500px) rotateY(30deg);
+		}
+		.flat-container, .preserve-container{
+			display: inline-block; border: 10px solid red;
+			transform: perspective(500px) rotateY(-60deg);
+		}
+		.flat-container{transform-style: flat;}
+		.preserve-container{transform-style: preserve-3d;}
+		/* 
+		backface-visibility
+		- 요소의 뒷면을 보여줄지 말지를 결정하는 속성
+		- hidden : 안보임
+		- visible : 기본값. 보임
+		*/
+		.backface-container .box1,
+		.backface-container .box2{
+			background: url(../../img/dog.jpg) center/contain no-repeat;
+			transform: perspective(500px) rotateY(160deg);
+		}
+		.backface-container .box2{
+			backface-visibility: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div class="translate-container">
+		<div class="box">기본</div>
+		<div class="box t1">x 50</div>
+		<div class="box t2">y 50</div>
+		<div class="box t3">x,y 50</div>
+		<div class="box t4">z 100</div>
+		<div class="box t5">x,y 50, z -100</div>
+	</div>
+	<hr>
+	<div class="scale-container">
+		<div class="box">기본</div>
+		<div class="box s1">x, y 확대</div>
+		<div class="box s2">x 확대</div>
+		<div class="box s3">y 축소</div>
+		<div class="box s4">z 확대</div>
+		<div class="box s5">x,z 확대 y 축소</div>
+	</div>
+	<hr>
+	<div class="rotate-container">
+		<div class="box">기본</div>
+		<div class="box r1">x 회전</div>
+		<div class="box r2">y 회전</div>
+		<div class="box r3">회전</div>
+		<div class="box r4">z 회전</div>
+	</div>
+	<hr>
+	<div class="skew-container">
+		<div class="box sk1">x 비틀기</div>
+		<div class="box sk2">y 비틀기</div>
+	</div>
+	<hr>
+	<div class="origin-container">
+		<div class="box">0, 0 기준 확대</div>
+	</div>
+	<hr>
+	<div class="style-container">
+		<div class="flat-container">
+			<div class="inner-box">flat</div>
+		</div>
+		<div class="preserve-container">
+			<div class="inner-box">preserve-3d</div>
+		</div>
+	</div>
+	<hr>
+	<div class="backface-container">
+		<div class="box box1"><b>뒷면이 보입니다</div>
+		<div class="box box2"><b>뒷면이 보입니다</div>
+	</div>
+</body>
+</html>
