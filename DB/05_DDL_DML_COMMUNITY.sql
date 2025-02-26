@@ -34,12 +34,20 @@ SET B_VIEW = B_VIEW + 1
 WHERE B_NUM = 1;
 
 # 1번 게시글 조회
-SELECT *
-FROM BOARD
-WHERE B_NUM = 1;
+SELECT 
+    *
+FROM
+    BOARD
+WHERE
+    B_NUM = 1;
 
 # ABC123 회원이 1번 게시글을 삭제할 때 쿼리
 -- DELETE FROM BOARD WHERE B_NUM = 1;
+
+# 샘플 데이터 추가
+INSERT INTO BOARD(B_TITLE, B_CONTENT, B_WRITER) VALUES
+("밥팟구함", "제곧내", "QWER"),("안녕히계세요 여러분", "떠납니다", "ASDF"),
+("내 이름은 남도일", "탐정이죠", "ZXCV"),("제목이 뭐냐 물으신다면", "대답해 드리는게 인지상정", "WASD");
 
 # 2025년 2월 25일에 작성된 게시글을 조회하는 쿼리
 SELECT *
@@ -50,3 +58,13 @@ WHERE B_DATE BETWEEN "2025-02-25" AND "2025-02-25 23:59:59";
 SELECT *
 FROM BOARD
 WHERE B_TITLE LIKE "%안녕%" OR B_CONTENT LIKE "%안녕%";
+
+# 최신 글을 조회하는 쿼리 -> 등록 날짜 최근
+SELECT *
+FROM BOARD
+ORDER BY B_DATE DESC;
+
+# 인기 글을 조회하는 쿼리 -> 조회수 가장 높음
+SELECT *
+FROM BOARD
+ORDER BY B_VIEW DESC;
