@@ -1,0 +1,18 @@
+DROP DATABASE IF EXISTS WINDOW_FUNC;
+
+/*
+윈도우 함수 : 테이블의 행과 행 사이의 관계를 정의하는 함수
+	- OVER 절이 들어간 함수
+	- 순위를 표현할 때 사용
+	- A:10, B:5, C:10, D:10, E:10, F:9, G:8
+*/
+
+CREATE DATABASE WINDOW_FUNC;
+USE WINDOW_FUNC;
+
+CREATE TABLE TEAM_SCORE(
+	TS_TEAM CHAR(1) PRIMARY KEY,
+    TS_SCORE INT NOT NULL DEFAULT 0
+);
+
+INSERT INTO TEAM_SCORE VALUES ("A", 10),("B", 5),("C", 10),("D", 10),("E", 10),("F", 9),("G", 8);

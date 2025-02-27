@@ -24,8 +24,8 @@
 			- 같은 크기의 항목을 여러개 지정할 때 사용
 		- auto-fit/auto-fill
 		  - 컬럼의 개수를 자동으로 조절할 때 사용하는 값
-			- auto-fit : 남은 공간을 그래도 둠
-			- auto-fill: 남은 공간이 발생하지 않게 아이템을 늘림
+			- auto-fill : 남은 공간이 발생하지 않게 아이템 개수를 늘림
+			- auto-fit : 남은 공간을 그대로 둠. 아이템 개수를 늘리지 않음
 		- fr
 		  - 비율 단위.
 			- 각 아이템이 동일한 길을 가지게 함
@@ -46,10 +46,10 @@
 
 		.container1{
 			display: grid;
-			grid-template-columns: repeat(4, 1fr);	/* 4개 열, 일정한 프레임으로 */
+			/* grid-template-columns: repeat(4, 1fr);	4개 열, 일정한 프레임으로 */
 			/* grid-template-columns: minmax(700px, 0.5fr) minmax(300px, 1fr); 두 열의 최소최대 */
-			/* grid-template-columns: repeat(auto-fill, 200px) */
-			grid-template-rows: repeat(4, 1fr);		/* 4개 행, 일정한 프레임으로*/
+			grid-template-columns: repeat(auto-fit, 100px);
+			grid-template-rows: repeat(4, 1fr);		/*4개 행, 일정한 프레임으로*/
 			row-gap: 20px;
 			column-gap: 10px;
 			/* gap: 10px 20px; 위와 동일*/
