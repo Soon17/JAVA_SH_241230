@@ -1,0 +1,76 @@
+/*
+이벤트 스케쥴러 : 특정 작업이 정기적으로 실행되도록 예약하는 기능 
+*/
+
+/*
+이벤트 스케쥴러 상태 확인 쿼리 
+ON : 스케쥴러 사용. OFF : 스케쥴러 사용 안 함 
+*/
+SHOW VARIABLES LIKE "EVENT%";
+
+/*
+이벤트 스케쥴러 상태 수정 
+SET GLOBAL EVENT_SCHEDULER = 값;
+값 : ON|OFF
+*/
+
+/*
+이벤트 스케쥴러 확인 
+*/
+SELECT * FROM INFORMATION_SCHEMA.EVENTS;
+
+/*
+이벤트 스케쥴러 등록(PRESERVE)
+
+CREATE EVENT 이벤트명 
+ON SCHEDULE EVERY 숫자 단위 
+[STARTS 시간]
+ON COMPLETION PRESERVE
+[COMMENT "설명"]
+DO
+	실행할 쿼리; # 복잡한 쿼리가 필요하면 프로시저를 생성하여 호출 
+    
+- 단위
+	- YEAR | QUARTER | MONTH | WEEK | DAY | HOUR | MINUTE | SECOND
+    - YEAR_MONTH | DAY_HOUR | DAY_MINUTE | DAY_SECOND
+		 | HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND
+	- STARTS
+	- ON COMPLETION PRESERVE : 이벤트가 성공한 후 이벤트를 유지
+	- ON COMPLETION NOT PRESERVE : 이벤트가 성공한 후 이벤트를 삭제(기본값)
+*/
+USE COMMUNITY;
+
+# 이벤트 삭제
+DROP EVENT IF EXISTS INCREASE_VIEW;
+
+CREATE EVENT INCREASE_VIEW
+ON SCHEDULE EVERY 1 SECOND
+ON COMPLETION PRESERVE
+DO
+	UPDATE BOARD
+    SET B_VIEW = B_VIEW + 1
+    WHERE B_NUM = 1;
+SELECT * FROM BOARD;
+
+/*
+이벤트 스케쥴러 등록(NOT PRESERVE)
+
+CREATE EVENT 이벤트명 
+ON SCHEDULE
+AT 시간
+[ON COMPLETION NOT PRESERVE] # 기본값
+[COMMENT "설명"]
+DO
+	실행할 쿼리;
+*/
+DROP EVENT IF EXISTS INCREASE_VIEW_ONCE;
+CREATE EVENT INCREASE_VIEW_ONCE
+ON SCHEDULE
+AT ADDTIME(NOW(), "00:00:03")
+ON COMPLETION NOT PRESERVE
+COMMENT "3초 뒤에 조회수를 늘림(반복 X)"
+DO
+	UPDATE BOARD
+    SET B_VIEW = B_VIEW + 1
+    WHERE B_NUM = 2;
+SELECT * FROM BOARD;

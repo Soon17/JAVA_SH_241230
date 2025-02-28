@@ -3,7 +3,7 @@ ctrl Shift : O 자동 import
 F2 : 클래스 리네임
 Alt 방향키 : 코드 이동
 컨트롤+F11 : 실행
-
+DB 무한루프시 "WINDOW+R" - "SERVICES.MSC" - MYSQL - 중지
 우클릭 -> Source -> Generate Constructor using Fields (생성자 생성)
 		  Generate Getters and Setters (get, set메서드 생성)
 
