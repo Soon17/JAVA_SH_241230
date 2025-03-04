@@ -12,4 +12,10 @@ public interface StudentService {
 
 	StudentVO getStudent(StudentVO studentVO);
 
+	boolean addStudent(StudentVO std);
+
+	boolean updateStudentName(StudentVO std);
+
+	boolean deleteStudent(StudentVO std);
+
 }

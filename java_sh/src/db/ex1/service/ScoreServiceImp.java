@@ -10,12 +10,14 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import db.ex1.dao.ScoreDAO;
+import db.ex1.dao.SubjectDAO;
 import db.ex1.model.vo.ScoreVO;
+import db.ex1.model.vo.SubjectVO;
 
-public class ScoreServiceImp implements ScoreService{
-
-	private ScoreDAO scoreDao;
+public class ScoreServiceImp implements ScoreService {
 	
+	private ScoreDAO scoreDao;
+
 	public ScoreServiceImp() {
 		String resource = "db/ex1/config/mybatis-config.xml";
 		InputStream inputStream;
@@ -23,7 +25,7 @@ public class ScoreServiceImp implements ScoreService{
 		try {
 			inputStream = Resources.getResourceAsStream(resource);
 			SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-			session = sessionFactory.openSession(true); //true : insert, update, delete 등의 commit 역할
+			session = sessionFactory.openSession(true);
 			scoreDao = session.getMapper(ScoreDAO.class);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -33,5 +35,10 @@ public class ScoreServiceImp implements ScoreService{
 	@Override
 	public List<ScoreVO> getScoreList() {
 		return scoreDao.selectScoreList();
+	}
+
+	@Override
+	public List<ScoreVO> getScoreList(int st_key) {
+		return scoreDao.selectScoreListBySt_key(st_key);
 	}
 }

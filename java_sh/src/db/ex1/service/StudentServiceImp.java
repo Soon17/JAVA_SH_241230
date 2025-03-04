@@ -14,7 +14,7 @@ import db.ex1.model.vo.StudentVO;
 
 public class StudentServiceImp implements StudentService {
 
-	private StudentDAO studentDao;
+	StudentDAO studentDao;
 	
 	public StudentServiceImp() {
 		String resource = "db/ex1/config/mybatis-config.xml";
@@ -23,7 +23,7 @@ public class StudentServiceImp implements StudentService {
 		try {
 			inputStream = Resources.getResourceAsStream(resource);
 			SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-			session = sessionFactory.openSession(true); //true : insert, update, delete 등의 commit 역할
+			session = sessionFactory.openSession(true);
 			studentDao = session.getMapper(StudentDAO.class);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -46,5 +46,31 @@ public class StudentServiceImp implements StudentService {
 			return null;
 		}
 		return studentDao.selectStudent2(studentVO);
+	}
+
+	@Override
+	public boolean addStudent(StudentVO std) {
+		StudentVO dbStd = studentDao.selectStudent2(std);
+		//학년 반 번호가 일치하는 학생이 존재하면 
+		if(dbStd != null) {
+			return false;
+		}
+		return studentDao.insertStudent(std);
+	}
+
+	@Override
+	public boolean updateStudentName(StudentVO std) {
+		if(std == null) {
+			return false;
+		}
+		return studentDao.updateStudentName(std);
+	}
+
+	@Override
+	public boolean deleteStudent(StudentVO std) {
+		if(std == null) {
+			return false;
+		}
+		return studentDao.deleteStudentName(std);
 	}
 }
