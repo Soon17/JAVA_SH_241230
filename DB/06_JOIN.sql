@@ -1,3 +1,4 @@
+USE STUDENT;
 /*
 JOIN : 여러 테이블을 묶어서 하나의 결과 테이블을 만들 때 활용
 INNER JOIN : 두 테이블의 교집합
