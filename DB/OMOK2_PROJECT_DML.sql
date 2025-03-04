@@ -5,7 +5,8 @@ INSERT INTO USER(U_NAME, U_PW) VALUES
     ("빅토리아", "5877"), ("김가람", "4485");
     
 INSERT INTO ROOM(RO_NUM, RO_B_U_NAME, RO_W_U_NAME) VALUES
-	(15, "정순형", "박소은"), (7, "김가람", "빅토리아");
+	(15, "정순형", "박소은"), (7, "김가람", "빅토리아"),
+    (18, "정순형", "빅토리아"), (89, "박소은", "김가람");
 
 INSERT INTO RESULT(RE_WINNER, RE_RO_ID) VALUES
-	("BLACK", 1), ("WHITE", 2);
+	("BLACK", 1), ("DRAW", 2), ("WHITE", 3), ("BLACK", 4);

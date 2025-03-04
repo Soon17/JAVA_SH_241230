@@ -40,9 +40,9 @@ public class Main {
 		List<ScoreVO> scoreList = scoreService.getScoreList();
 		//System.out.println(scoreList);
 		
-		/* 1학년 1반 1번 학생의 등록된 성적들을 가져오는 코드 */
-		// 1학년 1반 1번 학생의 정보를 가져옴 
-		StudentVO std3 = studentService.getStudent(1, 1, 1);
+		/* 1학년 1반 7번 학생의 등록된 성적들을 가져오는 코드 */
+		// 1학년 1반 7번 학생의 정보를 가져옴 
+		StudentVO std3 = studentService.getStudent(1, 1, 7);
 		
 		// 학생의 기본키를 이용하여 성적들을 가져옴 
 		List<ScoreVO> scores = scoreService.getScoreList(std3.getSt_key());
@@ -52,7 +52,7 @@ public class Main {
 		//	System.out.println(score);
 		}
 		
-		/* 1학년 1반 1번 abc 학생을 등록 */
+		/* 1학년 1반 11번 abc 학생을 등록 */
 		StudentVO std4 = new StudentVO(0, 1, 1, 11, "abc"); 
 		if(studentService.addStudent(std4)) {
 			System.out.println(std4 + "학생을 등록 했습니다.");
@@ -62,7 +62,7 @@ public class Main {
 		}
 		
 		/* 1학년 1반 1번 학생의 이름을 111로 수정*/
-		StudentVO std5 = new StudentVO(0, 1, 1, 1, "111");
+		StudentVO std5 = new StudentVO(0, 1, 1, 7, "111");
 		if(studentService.updateStudentName(std5)) {
 			System.out.println(std5 + " 학생을 수정했습니다.");
 		} else {
@@ -70,7 +70,7 @@ public class Main {
 		}
 		
 		/**/
-		std4.setSt_grade(3);
+		std4.setSt_grade(1);
 		if(studentService.deleteStudent(std4)) {
 			System.out.println(std4 + " 학생을 삭제 했습니다.");
 		} else {
