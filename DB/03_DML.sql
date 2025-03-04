@@ -42,7 +42,7 @@ UPDATE 테이블명 SET 속성1=값1, ..., 속성N=값N WHERE 조건
 # 1학년 1반 1번 학생의 이름을 홍길동A로 수정하는 쿼리
 UPDATE STUDENT
 SET ST_NAME = "홍길동A"
-WHERE ST_GRADE = 1 AND ST_CLASS = 1 AND ST_NUM = 1;
+WHERE ST_GRADE = 1 AND ST_CLASS = 1 AND ST_NUM = 7;
 
 # 데이터 삭제
 /*
