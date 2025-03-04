@@ -7,6 +7,13 @@ DB 무한루프시 "WINDOW+R" - "SERVICES.MSC" - MYSQL - 중지
 우클릭 -> Source -> Generate Constructor using Fields (생성자 생성)
 		  Generate Getters and Setters (get, set메서드 생성)
 
+DB <-> 자바 연결
+1. mysql 검색 - downloads 링크 - 하단바의 mysql community server - mysql community downloads 바로 밑의 mysql community server 화살표 - connector/j - select operating system 에서 platform independent 선택 - zip 파일 다운로드 - (압축 해제 후 jar 파일 잘라내기)
+2. mybatis 검색 - 첫번째 링크 - 한국어 설정 - 시작하기 - mtbatis-x.x.x.jar 링크 - 3.5.17.zip 다운로드 - (압축 해제 후 jar 파일 잘라내기)
+3. 원하는 위치에 jar 폴더 생성 후 두 파일 붙여넣기
+4. javaIDE - window - preferences - maven - update maven projects on startup 체크 후 apply and close
+	- 프로젝트 우클릭 - build path - configure build path... - libraries - modulepath - add external jars - jar폴더의 두 파일 선택 - apply and close
+
 FileInputStream("경로")	경로에 있는 파일을 읽어 옴.
 			만약 파일이 없으면 FileNotFoundException 오류 발생.
 	read()		파일을 바이트 단위로 불러옴. (한글 깨짐, 반복문 필요)
