@@ -1,13 +1,15 @@
-package TeamProject2;
+package TeamProject2.main;
 
 import java.net.Socket;
 import java.util.Scanner;
+
+import TeamProject2.service.Client;
 
 public class ClientMain {
 
 	public static void main(String[] args) {
 		int port = 5001;
-		String ip = "192.168.140.12";
+		String ip = "192.168.40.74";
 //		String ip = "127.0.0.1";
 		Scanner sc = new Scanner(System.in);
 		

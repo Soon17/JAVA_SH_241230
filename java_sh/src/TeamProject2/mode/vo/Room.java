@@ -1,11 +1,11 @@
-package TeamProject2;
+package TeamProject2.mode.vo;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import TeamProject2.service.OmokProgram;
 import lombok.Data;
 
 @Data

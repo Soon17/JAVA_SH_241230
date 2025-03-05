@@ -1,10 +1,13 @@
-package TeamProject2;
+package TeamProject2.service;
 
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+import TeamProject2.mode.vo.Field;
+import TeamProject2.mode.vo.Stone;
 
 public class OmokProgram {
 
@@ -15,10 +18,10 @@ public class OmokProgram {
 	private List<Stone> whiteList = new ArrayList<Stone>();
 	private Field field = new Field();
 	
-	boolean gameOver = false;
+	public boolean gameOver = false;
 	
-	String winner;
-	final String startField = field.printField();
+	public String winner;
+	public final String startField = field.printField();
 	
 	public OmokProgram(ObjectOutputStream oos1, ObjectOutputStream oos2) {
 		this.oos1 = oos1;
