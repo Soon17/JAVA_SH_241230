@@ -1,4 +1,4 @@
-package TeamProject;
+package TeamProject2;
 
 import java.net.Socket;
 import java.util.Scanner;
