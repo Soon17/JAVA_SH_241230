@@ -56,6 +56,7 @@ public class StudentServiceImp implements StudentService {
 			return false;
 		}
 		return studentDao.insertStudent(std);
+//		int key = std.getSt_key();
 	}
 
 	@Override
