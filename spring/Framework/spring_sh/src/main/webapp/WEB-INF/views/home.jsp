@@ -13,7 +13,11 @@
 	Hello world!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
-<a href="http://www.naver.com">go to naver</a>
+<!--
+서버에서 보낸 데이터를 처리할 때는 $`{화면에서처리할이름}을 이용하여 활용
+- 단 주석에서도 인식되기 때문에 주석에서 조심히 사용
+-->
+
+<P> 제 이름은 ${name}입니다. </P>
 </body>
 </html>
