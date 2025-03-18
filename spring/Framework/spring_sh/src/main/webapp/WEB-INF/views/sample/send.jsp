@@ -13,6 +13,7 @@
 	 -->
 	<p>${person.name}의 나이 : ${person.age}</p>
 	<p>${person.getName()}의 나이 : ${person.getAge()}</p>
-	<p>${person.total}
+	<p>${person.total}</p>
+	<p>${person}</p>
 </body>
 </html>
