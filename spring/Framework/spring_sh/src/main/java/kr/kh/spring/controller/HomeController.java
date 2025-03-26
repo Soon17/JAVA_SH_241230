@@ -25,10 +25,10 @@ import kr.kh.spring.service.MemberService;
  * */
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	private MemberService memberService;
-
+	
 	/* @RequestMapping
 	 * => 처리할 URL 정보를 지정하는 어노테이션으로 해당 정보와 일치하는 경우 메소드를 호출하여 실행
 	 * => value : 처리할 URL을 지정
@@ -95,7 +95,7 @@ public class HomeController {
 		return "sample/send";
 	}
 	*/
-	@GetMapping("/{name}/{age}")
+	@GetMapping("/sample/{name}/{age}")
 	public String nameAge(@PathVariable("name")String name1, @PathVariable("age")int age1) {
 		System.out.println("화면에서 전송한 이름 : " + name1);
 		System.out.println("화면에서 전송한 이름 : " + age1);
@@ -148,24 +148,23 @@ public class HomeController {
 	public String login() {
 		return "/member/login";
 	}
-	
 	@PostMapping("/login")
 	public String loginPost(Model model, MemberVO member) {
-		//화면에서 보낸 회원정보와 일치하는 회원정보를 DB에서 가져옴
+		//화면에서 보낸 회원 정보와 일치하는 회원 정보를 DB에서 가져옴
 		MemberVO user = memberService.login(member);
-		//가져온 회원정보를 인터셉터에게 전달
+		//가져온 회원 정보를 인터셉터에게 전달
 		model.addAttribute("user", user);
-		
-		if(user == null) return "redirect:/login";
-		
+		if(user == null) {
+			return "redirect:/login";			
+		}
 		return "redirect:/";
 	}
-	
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request) {
+		
+		//세션에 있는 user를 삭제
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
-		//세션에 있는 user를 삭제
-		return "redirect:/login";
+		return "redirect:/";
 	}
 }
