@@ -127,7 +127,7 @@ public class HomeController {
 	@GetMapping("/jstl")
 	public String jstl(Model model) {
 		List<String> list = Arrays.asList("사과","바나나", "딸기", "포도");
-		model.addAttribute("str", "<h1>서버에서 보낸 데이터입니다.</h1>");
+		model.addAttribute("str", "<h1>서버(HomeControl)에서 보낸 데이터입니다.</h1>");
 		model.addAttribute("age", 10);
 		model.addAttribute("list", list);
 		model.addAttribute("date", new Date());
