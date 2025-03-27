@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.kh.spring.model.dto.PersonDTO;
 import kr.kh.spring.model.vo.MemberVO;
@@ -137,9 +139,11 @@ public class HomeController {
 	}
 	
 	@PostMapping("/signup")
-	public String signupPost(MemberVO member) {
+	public String signupPost(Model model, MemberVO member) {
 		if(memberService.signup(member)) {
-			return "redirect:/";
+			model.addAttribute("msg", "회원가입 했습니다.");
+			model.addAttribute("url", "/");
+			return "msg/msg";
 		}
 		return "redirect:/signup";
 	}
@@ -166,5 +170,11 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
 		return "redirect:/";
+	}
+	
+	@ResponseBody //뷰 리졸버를 통하지 않고 값을 그대로 전달(리턴값의 경로로 찾아가는 것이 아닌 리턴값 그대로를 출력)
+	@PostMapping("/check/id")
+	public boolean checkId(@RequestParam("id") String id) {
+		return memberService.checkId(id);
 	}
 }
