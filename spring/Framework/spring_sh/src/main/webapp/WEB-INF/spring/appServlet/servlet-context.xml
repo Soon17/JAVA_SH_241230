@@ -9,6 +9,7 @@
 
 	<annotation-driven />
 
+	<context:property-placeholder location="/WEB-INF/spring/config.properties" />
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/download/**" location="file:///D:/uploads/" />
 
