@@ -19,7 +19,9 @@ import kr.kh.spring.model.vo.PostVO;
 import kr.kh.spring.pagination.PageMaker;
 import kr.kh.spring.pagination.PostCriteria;
 import kr.kh.spring.service.PostService;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Controller
 public class PostController {
 
@@ -38,6 +40,8 @@ public class PostController {
 		
 		
 		PageMaker pm = postService.getPageMaker(cri);
+		log.info(pm);	//정보를 출력
+		log.warn(pm);	//정보를 출력(오류예상시 용도)
 		
 		//화면에 게시글 목록을 전송
 		//매퍼의 resultType=kr.kh.spring.model.vo.postVO
