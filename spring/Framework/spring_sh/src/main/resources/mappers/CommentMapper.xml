@@ -25,5 +25,30 @@
 		select * from comment
 		where co_po_num = #{cri.search}
 		order by co_ori_num desc, co_num
+		limit #{cri.pageStart}, #{cri.perPageNum}
 	</select>
+	
+	<select id="selectComment" resultType="CommentVO">
+		select *
+		from comment
+		where co_num = #{co_num}
+	</select>
+	
+	<update id="deleteComment">
+		update comment
+		set co_del = "Y"
+		where co_num = #{co_num}
+	</update>
+	
+	<select id="selectCountCommentList" resultType="int">
+		select count(*)
+		from comment
+		where co_po_num = #{cri.search}
+	</select>
+	
+	<update id="updateComment">
+		update comment
+		set co_content = #{comment.co_content}
+		where co_num = #{comment.co_num}
+	</update>
 </mapper>

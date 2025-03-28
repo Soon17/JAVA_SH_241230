@@ -39,6 +39,31 @@ public class CommentServiceImp implements CommentService{
 	@Override
 	public PageMaker getPageMaker(Criteria cri) {
 		if(cri == null) return null;
-		return new PageMaker(3, cri, 0);
+		
+		int totalCount = commentDao.selectCountCommentList(cri);
+		return new PageMaker(3, cri, totalCount);
+	}
+
+	@Override
+	public boolean deleteComment(int co_num, MemberVO user) {
+		if(user == null) return false;
+		
+		//작성자 확인
+		CommentVO comment = commentDao.selectComment(co_num);
+		
+		if(comment == null || !comment.getCo_me_id().equals(user.getMe_id())) return false;
+		
+		return commentDao.deleteComment(co_num);
+	}
+
+	@Override
+	public boolean updateComment(CommentVO comment, MemberVO user) {
+		if(comment == null || user == null) return false;
+		
+		CommentVO dbComment = commentDao.selectComment(comment.getCo_num());
+		
+		if(dbComment == null || !dbComment.getCo_me_id().equals(user.getMe_id())) return false;
+		
+		return commentDao.updateComment(comment);
 	}
 }

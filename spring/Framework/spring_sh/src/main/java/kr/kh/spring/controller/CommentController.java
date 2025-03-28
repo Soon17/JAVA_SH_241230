@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.kh.spring.model.vo.CommentVO;
@@ -47,12 +48,26 @@ public class CommentController {
 	
 	@PostMapping("/list")
 	public String list(Model model, @RequestBody Criteria cri) {
-		
+		cri.setPerPageNum(5);
 		List<CommentVO> list = commentService.getCommentList(cri);
 		PageMaker pm = commentService.getPageMaker(cri);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pm", pm);
 		return "comment/list";
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public boolean delete(@RequestParam int co_num, HttpSession session) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		return commentService.deleteComment(co_num, user);
+	}
+	
+	@PostMapping("/update")
+	@ResponseBody
+	public boolean update(@RequestBody CommentVO comment, HttpSession session) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		return commentService.updateComment(comment, user);
 	}
 }
