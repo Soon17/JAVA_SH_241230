@@ -80,6 +80,6 @@
 	</beans:bean>
 	<!-- 업로드할 파일 경로 -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="d:\\uploads"/>
+		<beans:constructor-arg value="${file.location}"/>
 	</beans:bean>
 </beans:beans>
