@@ -59,4 +59,4 @@ test/
 
 .metadata
 *.class
-.config.properties
+config.properties
