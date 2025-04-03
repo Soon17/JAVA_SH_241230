@@ -35,8 +35,8 @@
 					<input type="text" class="form-control" value="${post.po_view}" readonly>
 				</div>
 				<div class="form-group mt-3 d-flex justify-content-center" id="btns">
-					<button class="btn btn<c:if test="${like.li_state ne 1}">-outline</c:if>-success btn-up" data-state="1">좋아요(${post.po_up})</button>
-					<button class="btn btn<c:if test="${like.li_state ne -1}">-outline</c:if>-danger ml-3 btn-down" data-state="-1">싫어요(${post.po_down})</button>
+					<button class="btn btn<c:if test="${like.li_state ne 1}">-outline</c:if>-success btn-up" data-state="1">좋아요(<span>${post.po_up}</span>)</button>
+					<button class="btn btn<c:if test="${like.li_state ne -1}">-outline</c:if>-danger ml-3 btn-down" data-state="-1">싫어요(<span>${post.po_down}</span>)</button>
 				</div>
 				<div class="form-group mt-3">
 					<label for="content" class="form-label">내용</label>
@@ -118,19 +118,22 @@
 				type : 'post',//json으로 보낼때는 무조건 post 
 				data : JSON.stringify(like), 
 				contentType : "application/json; charset=utf-8",
+				dataType : "json",
 				success : function (data){
-					switch(data){
+					let res = data.res;
+					let upCount = data.up;
+					let downCount = data.down;
+					drawUpDownBtns(res, upCount, downCount);
+					console.log(data);
+					switch(res){
 					case -1:
-						alert("싫어요를 눌렀습니다.")
-						$("#btns").load(location.href + " #btns>*");
+						alert("싫어요를 눌렀습니다.");
 						break;
 					case 1:
 						alert("좋아요를 눌렀습니다.")
-						$("#btns").load(location.href + " #btns>*");
 						break;
 					case 0:
 						alert((state == 1 ? "좋아요" : "싫어요") + "를 취소했습니다.")
-						$("#btns").load(location.href + " #btns>*");
 						break;
 					default:
 						alert("오류");
@@ -141,6 +144,31 @@
 				}
 			});
 		});
+		
+		function drawUpDownBtns(state, upCount, downCount){
+			//초기 버튼 설정 제거
+			$(".btn-up").removeClass("btn-outline-success");
+			$(".btn-up").removeClass("btn-success");
+			$(".btn-down").removeClass("btn-outline-danger");
+			$(".btn-down").removeClass("btn-danger");
+			//상태에 맞게 설정
+			switch(state){
+			case 1:
+				$(".btn-up").addClass("btn-success");
+				$(".btn-down").addClass("btn-outline-danger");
+				break;
+			case -1:
+				$(".btn-down").addClass("btn-danger");
+				$(".btn-up").addClass("btn-outline-success");
+				break;
+			case 0:
+				$(".btn-up").addClass("btn-outline-success");
+				$(".btn-down").addClass("btn-outline-danger");
+			}
+			//좋아요 싫어요 업데이트
+			$(".btn-up span").text(upCount);
+			$(".btn-down span").text(downCount);
+		}
 	</script>
 	
 </body>
