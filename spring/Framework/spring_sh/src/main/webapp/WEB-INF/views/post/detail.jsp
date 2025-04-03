@@ -30,10 +30,13 @@
 					<label for="title" class="form-label">작성일</label>
 					<input type="text" class="form-control" value="<fmt:formatDate value="${post.po_date}" pattern="yyyy-MM-dd HH:mm:ss" />" readonly>
 				</div>
-				
 				<div class="form-group mt-3">
 					<label for="title" class="form-label">조회수</label>
 					<input type="text" class="form-control" value="${post.po_view}" readonly>
+				</div>
+				<div class="form-group mt-3 d-flex justify-content-center" id="btns">
+					<button class="btn btn<c:if test="${like.li_state ne 1}">-outline</c:if>-success btn-up" data-state="1">좋아요(${post.po_up})</button>
+					<button class="btn btn<c:if test="${like.li_state ne -1}">-outline</c:if>-danger ml-3 btn-down" data-state="-1">싫어요(${post.po_down})</button>
 				</div>
 				<div class="form-group mt-3">
 					<label for="content" class="form-label">내용</label>
@@ -93,6 +96,52 @@
 		getCommentList(cri);
 	</script>
 	
+	<script type="text/javascript">
+		$(document).on("click", ".btn-up, .btn-down", function(e){
+			
+			if(${user == null}){
+				if(confirm("로그인이 필요한 페이지 입니다.\n로그인 페이지로 이동하시겠습니까?")){
+					location.href="<c:url value="/login"/>";
+				}
+				return;
+			}
+			let state = $(this).data("state");
+			let num = "${post.po_num}";
+			
+			let like = {
+				li_po_num : num,
+				li_state : state
+			}
+			$.ajax({
+				async : true, //비동기 : true(비동기), false(동기)
+				url : '<c:url value="/post/like"/>', 
+				type : 'post',//json으로 보낼때는 무조건 post 
+				data : JSON.stringify(like), 
+				contentType : "application/json; charset=utf-8",
+				success : function (data){
+					switch(data){
+					case -1:
+						alert("싫어요를 눌렀습니다.")
+						$("#btns").load(location.href + " #btns>*");
+						break;
+					case 1:
+						alert("좋아요를 눌렀습니다.")
+						$("#btns").load(location.href + " #btns>*");
+						break;
+					case 0:
+						alert((state == 1 ? "좋아요" : "싫어요") + "를 취소했습니다.")
+						$("#btns").load(location.href + " #btns>*");
+						break;
+					default:
+						alert("오류");
+					}
+				}, 
+				error : function(jqXHR, textStatus, errorThrown){
+
+				}
+			});
+		});
+	</script>
 	
 </body>
 </html>
