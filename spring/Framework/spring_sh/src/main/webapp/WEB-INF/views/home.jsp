@@ -5,7 +5,7 @@
 <html>
 <head>
 </head>
-<body>
+<body style="height: 2000px">
 	<h1>
 		Hello world!  
 	</h1>
