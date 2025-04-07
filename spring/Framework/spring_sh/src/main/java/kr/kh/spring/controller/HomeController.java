@@ -190,4 +190,30 @@ public class HomeController {
 	public boolean checkId(@RequestParam("id") String id) {
 		return memberService.checkId(id);
 	}
+	
+	@GetMapping("/find/pw")
+	public String findPw() {
+		return "/member/pw";
+	}
+	@ResponseBody
+	@PostMapping("/find/pw")
+	public boolean findPwPost(@RequestParam String id) {
+		
+		return memberService.findPw(id);
+	}
+	@GetMapping("/mypage")
+	public String mypage() {
+		return "/member/mypage";
+	}
+	@PostMapping("/mypage")
+	public String mypagePost(Model model, MemberVO member, HttpSession session) {
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		if(memberService.updateMember(user, member)) {
+			model.addAttribute("msg", "회원 정보를 변경했습니다.");
+		}else {
+			model.addAttribute("msg", "회원 정보를 변경하지 못했습니다.");
+		}
+		model.addAttribute("url", "/mypage");
+		return "/msg/msg";
+	}
 }
