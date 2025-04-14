@@ -3,5 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.kh.spring2.dao.PostDAO">
+	<select id="selectBoardList" resultType="BoardVO">
+		select *
+		from board
+		order by bo_num asc
+	</select>
 	
+	<select id="selectPostList" resultType="PostVO">
+		select *
+		from post
+		where po_del = "N"
+		<if test="num != 0">
+			and po_bo_num = #{num}
+		</if>
+		order by po_num desc
+	</select>
 </mapper>
