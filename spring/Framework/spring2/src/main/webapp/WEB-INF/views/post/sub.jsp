@@ -10,7 +10,14 @@
 	<c:forEach items="${postList}" var="post">
 		<div class="form-group">
 			<div class="form-control input-group" style="min-height: auto; height: auto">
-				<img width="100" height="120" src="https://flexible.img.hani.co.kr/flexible/normal/960/960/imgdb/resize/2019/0121/00501111_20190121.webp">
+				<c:choose>
+					<c:when test="${post.po_fi_name ne null }">
+						<img width="100" height="120" src="<c:url value="/download${post.po_fi_name }"/>">
+					</c:when>
+					<c:otherwise>
+						<img width="100" height="120" src="<c:url value="/resources/base.png"/>">
+					</c:otherwise>
+				</c:choose>
 				<div class="ml-3">
 					<div><b>${post.po_title}</b></div>
 					<div>작성자 : ${post.po_me_id}</div>
@@ -23,6 +30,11 @@
 	</c:forEach>
 	<c:if test="${postList.size() eq 0}">
 		<div class="form-control text-center">등록된 게시글이 없습니다.</div>
+	</c:if>
+	
+	<!-- 더보기 버튼 추가 -->
+	<c:if test="${pm.next}">
+		<button class="btn btn-danger btn-more col-12">더보기</button>
 	</c:if>
 </body>
 </html>

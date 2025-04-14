@@ -13,6 +13,13 @@
 	</c:forEach>
 	<!-- 검색화면 추가(검색창, 검색 타입, 버튼) -->
 	
+	<!-- 정렬방식 선택 -->
+	<select class="form-control col-3 sel-type mt-3">
+		<option value="po_num desc">최신순</option>
+		<option value="po_up desc">추천순</option>
+		<option value="po_view desc">조회순</option>
+	</select>
+	
 	<!-- 게시글 목록 보여주는 컨테이너 추가 -->
 	<div class="pl-container mt-3 mb-3">
 		<!--
@@ -31,35 +38,40 @@
 		-->
 	</div>
 	
-	<!-- 더보기 버튼 추가 -->
-	
 	<script type="text/javascript">
-		getPostList(0);
+		let cri = {
+				po_bo_num : 0,
+				page : 1,
+				orderBy : "po_num desc"
+		}
+	
+		//초기 실행 함수
+		let data = getPostList(cri);
+		$(".pl-container").html(data);
 		
+		//게시판 클릭 이벤트
 		$(".btn-board").click(function (e) {
-			let num = $(this).data("num");
-			getPostList(num);
+			cri.po_bo_num = $(this).data("num");
+			cri.page = 1;
+			let data = getPostList(cri);
+			$(".pl-container").html(data);
 		});
 		
-		function getPostList(num){
-			checkBoardBtn(num);
-			/*
-			비동기 통신으로 서버에 연결하여 빈 문자열로 받는 코드를 작성
-			url : /post/list
-			method : post
-			data : num을 전송
-			*/
-			$.ajax({
-				async : true, //비동기 : true(비동기), false(동기)
-				url : '<c:url value="/post/list"/>', 
-				type : 'post', 
-				data : {num : num},
-				success : function (data){
-					$(".pl-container").html(data);
-					console.log(data);
-				}
-			});
-		};
+		//더보기 클릭 이벤트
+		$(document).on("click", ".btn-more", function(e){
+			$(this).remove();
+			cri.page = cri.page + 1;
+			let data = getPostList(cri);
+			$(".pl-container").append(data);
+		})
+		
+		//정렬방법 change 이벤트
+		$(".sel-type").change(function(e){
+			cri.orderBy = $(this).val();
+			cri.page = 1;
+			let data = getPostList(cri);
+			$(".pl-container").html(data);
+		})
 		
 		function checkBoardBtn(num){
 			//초기 설정
@@ -73,6 +85,28 @@
 				}
 			});
 		}
+		
+		function getPostList(cri){
+			checkBoardBtn(cri.po_bo_num);
+			/*
+			비동기 통신으로 서버에 연결하여 빈 문자열로 받는 코드를 작성
+			url : /post/list
+			method : post
+			data : num을 전송
+			*/
+			let res = "";
+			$.ajax({
+				async : false, //비동기 : true(비동기), false(동기)
+				url : '<c:url value="/post/list"/>', 
+				type : 'post', 
+				data : JSON.stringify(cri),
+				contentType : "application/json; charset=utf-8",
+				success : function (data){
+					res = data;
+				}
+			});
+			return res;
+		};
 	</script>
 </body>
 </html>
