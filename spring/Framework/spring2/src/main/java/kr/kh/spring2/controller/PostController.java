@@ -2,15 +2,22 @@ package kr.kh.spring2.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.kh.spring2.model.vo.BoardVO;
+import kr.kh.spring2.model.vo.FileVO;
+import kr.kh.spring2.model.vo.MemberVO;
 import kr.kh.spring2.model.vo.PostVO;
 import kr.kh.spring2.pagination.PageMaker;
 import kr.kh.spring2.pagination.PostCriteria;
@@ -46,5 +53,35 @@ public class PostController {
 		model.addAttribute("postList", postList);
 		model.addAttribute("pm", pm);
 		return "post/sub";
+	}
+	
+	@GetMapping("/detail/{po_num}")
+	public String detail(Model model, @PathVariable int po_num) { //경로에서 가져오는 어노테이션
+		//게시글 번호에 맞는 게시글을 가져오라고 서비스에게 시킴
+		PostVO post = postService.getPost(po_num);
+		//게시글 번호에 맞는 첨부파일들을 가져오라고 서비스에게 시킴
+		List<FileVO> list = postService.getFileList(po_num);
+		//화면에 전달
+		model.addAttribute("post", post);
+		model.addAttribute("list", list);
+		return "/post/detail";
+	}
+	
+	@Value("${file.location}")
+	String uploadPath;
+	
+	@GetMapping("/insert")
+	public String insert(Model model) {
+		List<BoardVO> list = postService.getBoardList();
+		model.addAttribute("list", list);
+		return "/post/insert";
+	}
+	
+	@PostMapping("/insert")
+	public String insertPost(PostVO post, HttpSession session, MultipartFile[] fileList) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(postService.insertPost(post, user, fileList))
+			return "redirect:/post/detail/" + post.getPo_num();
+		return "redirect:/post/insert";
 	}
 }

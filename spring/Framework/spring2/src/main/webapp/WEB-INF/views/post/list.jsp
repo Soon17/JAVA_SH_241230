@@ -14,11 +14,17 @@
 	<!-- 검색화면 추가(검색창, 검색 타입, 버튼) -->
 	
 	<!-- 정렬방식 선택 -->
-	<select class="form-control col-3 sel-type mt-3">
-		<option value="po_num desc">최신순</option>
-		<option value="po_up desc">추천순</option>
-		<option value="po_view desc">조회순</option>
-	</select>
+	<div class="d-flex justify-content-between mt-3">
+		<select class="form-control col-3 sel-type">
+			<option value="po_num desc">최신순</option>
+			<option value="po_up desc, po_num desc">추천순</option>
+			<option value="po_view desc, po_num desc">조회순</option>
+		</select>
+		
+		<c:if test="${user ne null}">
+			<a href="<c:url value="/post/insert"/>" class="btn btn-outline-success">글 등록</a>
+		</c:if>		
+	</div>
 	
 	<!-- 게시글 목록 보여주는 컨테이너 추가 -->
 	<div class="pl-container mt-3 mb-3">

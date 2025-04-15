@@ -30,4 +30,25 @@
 			and po_bo_num = #{cri.po_bo_num}
 		</if>
 	</select>
+	
+	<select id="selectPost" resultType="PostVO">
+		select post.*, bo_name as po_bo_name
+		from post
+		join board on po_bo_num = bo_num
+		where po_num = #{po_num} and po_del = "N"
+	</select>
+	
+	<select id="selectFileList" resultType="FileVO">
+		select *
+		from file
+		where fi_po_num = #{po_num}
+	</select>
+	<insert id="insertPost" useGeneratedKeys="true" keyProperty="po_num">
+		insert into post(po_bo_num, po_me_id, po_title, po_content)
+		value(#{po_bo_num},#{po_me_id},#{po_title},"")	<!-- @Param을 사용하지 않아서 이대로 사용 가능 -->
+	</insert>
+	<insert id="insertFile">
+		insert into file(fi_name, fi_ori_name, fi_po_num)
+		value(#{fi_name}, #{fi_ori_name}, #{fi_po_num})
+	</insert>
 </mapper>
