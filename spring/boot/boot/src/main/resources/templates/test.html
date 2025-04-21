@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>테스트</title>
+</head>
+<body>
+	<!-- fragments 사용법(헤더) -->
+	<div th:replace="fragments/common :: header"></div>
+
+	<h1>테스트</h1>
+
+	<!-- 변수의 값을 링크에 넣는 방법(href) -->
+	<a th:href="@{/test/{num}(num=${num})}">
+		랜덤 수: <span th:text="${num}"></span>
+	</a>
+
+	<!-- 조건문 사용 방법(if, unless) -->
+	<div th:if="${num >= 5}">5 이상입니다.</div>
+	<div th:unless="${num >= 5}">5 미만입니다.</div>
+
+	<!-- switch-case 사용방법 -->
+	<div th:switch="${role}">
+		<div th:case="'ADMIN'">관리자입니다.</div>
+		<div th:case="'USER'">회원입니다.</div>
+		<div th:case="*">게스트입니다.</div>
+	</div>
+
+	<!-- forEach 사용방법 -->
+	<ul>
+		<li th:each="item, stat : ${items}">
+			<span th:text="${stat.count}"></span>-
+			<span th:text="${item}"></span>
+		</li>
+	</ul>
+
+	<!-- 반복문 사용방법 -->
+	<ul>
+		<li th:each="num : ${#numbers.sequence(1, 5)}" th:text="${num}"></li>
+	</ul>
+
+	<hr>
+
+	<!-- value, attr -->
+	<input type="text" name="num" placeholder="정수를 입력하세요." th:value="${num}">
+	<input th:attr="type='text', name='num', placeholder='정수를 입력하세요.', value=${num}">
+
+	<hr>
+
+	<!-- object -->
+	<form>
+		<input th:value="${user.me_id}" name="me_id"/>
+		<input th:value="${user.me_pw}" name="me_pw"/>
+		<input th:value="${user.me_authority}" name="me_authority"/>
+		<button>전송</button>
+	</form>
+
+	<form th:object="${user}">
+		<input th:field="*{me_id}"/>
+		<input th:field="*{me_pw}"/>
+		<input th:field="*{me_authority}"/>
+		<button>전송</button>
+	</form>
+
+	<!-- #dates 객체 -->
+	<div th:text="${#dates.format(user.date, 'yyyy-MM-dd')}"></div>
+
+	<!-- fragments 사용법(푸터) -->
+	<div th:replace="fragments/common :: footer"></div>
+</body>
+</html>
