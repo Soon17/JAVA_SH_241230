@@ -26,4 +26,20 @@
 		select #{co_po_num}, #{co_me_id}, #{co_content}, ifnull(max(co_num), 0) + 1, ifnull(max(co_num), 0) + 1
 		from comment
 	</insert>
+	<insert id="insertFile">
+		insert into file(fi_po_num, fi_name, fi_ori_name)
+		value(#{fi_po_num}, #{fi_name}, #{fi_ori_name})
+	</insert>
+	<delete id="deleteFile">
+		delete from file where fi_num = #{fi_num}
+	</delete>
+	<update id="deletePost">
+		update post set po_del = 'Y' where po_num = #{po_num}
+	</update>
+	<update id="updatePost">
+		update post set po_title = #{po_title}, po_content = #{po_content} where po_num = #{po_num}
+	</update>
+	<select id="selectFile" resultType="FileVO">
+		select * from file where fi_num = #{fi_num}
+	</select>
 </mapper>
