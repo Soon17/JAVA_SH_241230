@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.kh.boot.dao.PostDAO">
-    <select id="selectPostList" resultType="PostVO">
+  <select id="selectPostList" resultType="PostVO">
 		select * from post where po_del = 'N'
 		<if test="bo_num != 0">
 			and po_bo_num = #{bo_num}
 		</if>
+		<choose>
+			<when test="type == 2">
+				and po_me_id = #{search}
+			</when>
+			<otherwise>
+				and (po_title like concat('%', #{search}, '%') or po_content like concat('%', #{search}, '%') )
+			</otherwise>
+		</choose>
 		order by po_num desc
+		limit #{pageStart}, #{perPageNum}
 	</select>
 	<select id="selectBoardList" resultType="BoardVO">
 		select * from board 
@@ -42,4 +51,44 @@
 	<select id="selectFile" resultType="FileVO">
 		select * from file where fi_num = #{fi_num}
 	</select>
+	<select id="selectCountPostList" resultType="int">
+		select count(*) from post where po_del = 'N'
+		<if test="bo_num != 0">
+			and po_bo_num = #{bo_num}
+		</if>
+		<choose>
+			<when test="type == 2">
+				and po_me_id = #{search}
+			</when>
+			<otherwise>
+				and (po_title like concat('%', #{search}, '%') or po_content like concat('%', #{search}, '%') )
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 추천 관련 쿼리  -->
+  <select id="selectLike" resultType="LikeVO">
+		select * from `like` where li_me_id = #{li_me_id} and li_po_num = #{li_po_num}
+	</select>
+
+	<insert id="insertLike" >
+		insert into `like`(li_me_id, li_po_num, li_state) value(#{li_me_id}, #{li_po_num}, #{li_state})
+	</insert>
+
+	<delete id="deleteLike">
+		delete from `like` where li_num = #{li_num}
+	</delete>
+	
+	<update id="updateLike">
+		update `like` set li_state = #{li_state} where li_num = #{li_num}
+	</update>
+	<update id="updatePostLike">
+		update post set 
+			po_up = (select count(*) from `like` where li_state = 1 and li_po_num = #{po_num}),
+			po_down = (select count(*) from `like` where li_state = -1 and li_po_num = #{po_num})
+		where po_num = #{po_num}
+	</update>
+	<update id="updateView">
+		update post set po_view = po_view + 1 where po_num = #{po_num}
+	</update>
 </mapper>
