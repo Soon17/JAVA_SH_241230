@@ -22,5 +22,17 @@
     <!-- 고정 푸터 -->
     <div th:replace="~{layout/footer.html :: footer}"></div> <!-- 푸터 불러오기 -->
 
+    <script>
+      $(document).ready(function(e){
+        $.ajax({
+          async : true,
+          url : "/category",
+          method : "get",
+          success : function(data){
+            $("#header").html(data);
+          }
+        })
+      })
+    </script>
 </body>
 </html>
