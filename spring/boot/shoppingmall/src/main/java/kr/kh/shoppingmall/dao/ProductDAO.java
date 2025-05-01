@@ -2,6 +2,10 @@ package kr.kh.shoppingmall.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import kr.kh.shoppingmall.model.vo.BuyListVO;
+import kr.kh.shoppingmall.model.vo.BuyVO;
 import kr.kh.shoppingmall.model.vo.CategoryVO;
 import kr.kh.shoppingmall.model.vo.ProductVO;
 
@@ -21,4 +25,17 @@ public interface ProductDAO {
 
 	List<ProductVO> selectProductList(int pr_ca_num);
 	
+	boolean insertProduct(ProductVO product);
+
+	boolean updateProduct(ProductVO product);
+
+	String selectNextPrCode(int pr_ca_num);
+
+	ProductVO selectProduct(String pr_code);
+
+	boolean insertBuy(BuyVO buy);
+
+	void insertBuyList(List<BuyListVO> list);
+
+	void updateProductAmount(BuyListVO bl);
 }

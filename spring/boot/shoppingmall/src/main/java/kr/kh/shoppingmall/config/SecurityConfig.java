@@ -24,13 +24,17 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		http.authorizeHttpRequests(
-			requests -> 
-				requests
-					.requestMatchers("/admin/**")
-					.hasAnyAuthority(UserRole.ADMIN.name())
-					.anyRequest()
-					.permitAll()
+		http
+		.csrf(csrf->
+			csrf
+				.disable()
+		)
+		.authorizeHttpRequests(requests -> 
+			requests
+				.requestMatchers("/admin/**")
+				.hasAnyAuthority(UserRole.ADMIN.name())
+				.anyRequest()
+				.permitAll()
 		)
 		.formLogin(form -> 
 			form
@@ -47,7 +51,7 @@ public class SecurityConfig {
 				.rememberMeCookieName("LC")//쿠키 이름
 				.tokenValiditySeconds(60 * 60 * 24 * 7)//유지 기간 : 7일
 		)
-		.logout((logout) -> 
+		.logout(logout -> 
 			logout
 				.logoutUrl("/logoutPost")
 				.logoutSuccessUrl("/")
