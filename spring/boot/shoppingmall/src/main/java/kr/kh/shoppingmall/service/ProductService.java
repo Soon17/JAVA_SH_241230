@@ -29,39 +29,42 @@ public class ProductService {
 	}
 
 	public String insertCategory(CategoryVO category) {
-		if(category == null) return "넘어온 정보가 없습니다.";
-
+		if(category == null){
+			return "넘어온 정보가 없습니다.";
+		}
 		CategoryVO dbCategory = productDAO.selectCategoryByName(category.getCa_name());
-
-		if(dbCategory != null) return "중복된 카테고리명입니다.";
-
+		if(dbCategory != null){
+			return "중복된 카테고리명입니다.";
+		}
 		dbCategory = productDAO.selectCategoryByCode(category.getCa_code());
-
-		if(dbCategory != null) return "중복된 카테고리 코드입니다.";
-
+		if(dbCategory != null){
+			return "중복된 카테고리코드입니다.";
+		}
 		productDAO.insertCategory(category);
-
 		return "카테고리를 등록했습니다.";
 	}
-
+	
 	public String updateCategory(CategoryVO category) {
-		if(category == null) return "넘어온 정보가 없습니다.";
-
+		if(category == null){
+			return "넘어온 정보가 없습니다.";
+		}
 		CategoryVO dbCategory = productDAO.selectCategoryByName(category.getCa_name());
-
-		if(dbCategory != null) return "중복된 카테고리명입니다.";
-
-		if(productDAO.updateCategory(category))return "카테고리를 수정했습니다.";
-
+		if(dbCategory != null ){
+			return "중복된 카테고리명입니다.";
+		}
+		if(productDAO.updateCategory(category)){
+			return "카테고리를 수정했습니다.";
+		}
 		return "카테고리를 수정하지 못했습니다.";
 	}
 
-	public String deleteCategory(int num) {
-		try {
-			if(productDAO.deleteCategory(num)) return "카테고리를 삭제했습니다.";
-				
+	public String deleteCategory(int ca_num) {
+		try{
+			if(productDAO.deleteCategory(ca_num)){
+				return "카테고리를 삭제했습니다.";
+			}
 			return "카테고리를 삭제하지 못했습니다.";
-		} catch (Exception e) {
+		}catch(Exception e){
 			return "제품이 등록된 카테고리는 삭제할 수 없습니다.";
 		}
 	}
@@ -69,7 +72,7 @@ public class ProductService {
 	public List<ProductVO> getProductList(int ca_num) {
 		return productDAO.selectProductList(ca_num);
 	}
-	
+
 	public boolean insertProduct(ProductVO product, MultipartFile thumb) {
 		if(product == null || thumb == null || thumb.getOriginalFilename().isEmpty()){
 			return false;
@@ -160,36 +163,60 @@ public class ProductService {
 	}
 
 	public boolean buy(BuyVO buy, CustomUser customUser) {
-		if(buy == null || customUser == null) return false;
-		int totalPrice = calculateTotalPrice(buy.getList());
-		buy.setBu_total(totalPrice);
+		if(customUser == null || buy == null){
+			return false;
+		}
+		int totalPrice = calclateTotalPrice(buy.getList());
+		buy.setBu_total_price(totalPrice);
 		buy.setBu_me_id(customUser.getUsername());
 		boolean res = productDAO.insertBuy(buy);
-		if(!res) return false;
+		if(!res){
+			return false;
+		}
 		setBu_num(buy.getBu_num(), buy.getList());
 		productDAO.insertBuyList(buy.getList());
+		for(BuyListVO bl : buy.getList()){
+			productDAO.updateProductAmount(bl);
+		}
 		return true;
 	}
 
 	private void setBu_num(int bu_num, List<BuyListVO> list) {
-		if(list == null || list.size() == 0) return;
+		if(list == null || list.size() == 0){
+			return;
+		}
 		for(BuyListVO bl : list){
 			bl.setBl_bu_num(bu_num);
 		}
 	}
 
-	private int calculateTotalPrice(List<BuyListVO> list) {
-		if(list == null || list.size() == 0) return 0;
+	private int calclateTotalPrice(List<BuyListVO> list) {
+		if(list == null || list.size() == 0){
+			return 0;
+		}
 		int total = 0;
 		for(BuyListVO bl : list){
+			//제품 정보 가져옴
 			ProductVO product = productDAO.selectProduct(bl.getBl_pr_code());
-			if(product == null) continue;
+			if(product == null){
+				continue;
+			}
 			//제품 구매 가격 = 제품 가격 * 구매 수량
 			bl.setBl_price(product.getPr_price() * bl.getBl_amount());
 			//총 가격 = 총가격 + 제품 구매 가격
 			total += bl.getBl_price();
 		}
 		return total;
-	
+	}
+
+	public List<BuyVO> getBuyList(CustomUser customUser) {
+		if(customUser == null) return null;
+		String id = customUser.getUsername();
+		return productDAO.selectBuyList(id);
+	}
+
+	public boolean updateBuy(int num, CustomUser customUser) {
+		if(customUser == null) return false;
+		return productDAO.updateBuy(num, customUser.getUsername()); 
 	}
 }

@@ -14,12 +14,17 @@ import kr.kh.shoppingmall.utils.CustomUser;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -27,16 +32,16 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
+	
 	@Autowired
 	ProductService productService;
 
 	@GetMapping("/list/{ca_num}")
-	public String list(@PathVariable int ca_num, Model model) {
+	public String list(Model model, @PathVariable int ca_num) {
 		List<ProductVO> list = productService.getProductList(ca_num);
 		model.addAttribute("productList", list);
 		return "product/list";
 	}
-	
 	@GetMapping("/detail")
 	public String detail(Model model, String pr_code) {
 		System.out.println(pr_code);
@@ -44,7 +49,6 @@ public class ProductController {
 		model.addAttribute("product", product);
 		return "product/detail";
 	}
-	
 	@PostMapping("/amount/check")
 	@ResponseBody
 	public int amountCheck(@RequestParam String code) {
@@ -65,5 +69,14 @@ public class ProductController {
 	public String buyComplete(@PathVariable int bu_num) {
 		return "product/complete";
 	}
+	
+	@PostMapping("/final/complete")
+	@ResponseBody
+	public boolean productFinalComplete(@RequestParam int num, @AuthenticationPrincipal CustomUser customUser) {
+		
+		return productService.updateBuy(num, customUser);
+	}
+	
+	
 	
 }
