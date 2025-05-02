@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import kr.kh.shoppingmall.model.vo.BuyVO;
+import kr.kh.shoppingmall.model.vo.CartVO;
 import kr.kh.shoppingmall.model.vo.ProductVO;
 import kr.kh.shoppingmall.service.ProductService;
 import kr.kh.shoppingmall.utils.CustomUser;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
+import groovy.transform.ASTTest;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,6 +79,24 @@ public class ProductController {
 		return productService.updateBuy(num, customUser);
 	}
 	
+	@PostMapping("/cart/insert")
+	@ResponseBody
+	public boolean cartInsert(@RequestBody CartVO cart, @AuthenticationPrincipal CustomUser customUser) {
+		
+		return productService.insertCart(cart, customUser);
+	}
 	
+	@GetMapping("/cart")
+	public String cart(Model model, @AuthenticationPrincipal CustomUser customUser) {
+		List<CartVO> cartList = productService.getCartList(customUser);
+		System.out.println(cartList);
+		model.addAttribute("cartList", cartList);
+		return "product/cart";
+	}
+	@PostMapping("/cart/update")
+	@ResponseBody
+	public String cartUPdate(@RequestBody CartVO cart, @AuthenticationPrincipal CustomUser customUser) {
+		return productService.updateCart(cart, customUser);
+	}
 	
 }
